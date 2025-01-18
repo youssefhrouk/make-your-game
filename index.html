@@ -33,16 +33,14 @@
     }
     #boxEnemy {
       position: absolute;
-      width : 50px;
-      height : 50px;
-      top : 50px;
-      border : 1px solid black;
+      width: 65px;
+      height: 50px;
       margin: 50px 60px;
-      background-color: red;
-
+       background-image: url("./images/alien.png");
+      background-size: cover;
     }
     #boxShooter {
-      background-color: blue;
+      background-color: rgb(174, 238, 0);
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
@@ -50,6 +48,26 @@
 </style>
 <body>
   <div id="game-container">
+    <dialog id="isSmallScreen" class="isSmallScreen">
+      <form method="dialog">
+        <p>Please make your browser window larger, if you wish to play the game</p>
+      </form>
+    </dialog>
+
+    <dialog id="gameOverScreen">
+      <form method="dialog">
+        <p>Game over</p>
+        <button id="tryAgain">Try Again!</button>
+      </form>
+    </dialog>  
+
+    <dialog id="pauseScreen">
+      <form method="dialog">
+        <p>Game paused</p>
+        <button id="resume" value="resume">Resume</button>
+        <button id="restart" value="restart">Restart</button>
+      </form>
+    </dialog>
     <div id="ui">
       <div>Score: <span id="score">0</span></div>
       <div>Bullets: <span id="bullets">3</span></div>
