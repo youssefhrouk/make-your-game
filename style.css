@@ -30,7 +30,7 @@ body{
     transform: translate(-20%);
     white-space: nowrap;
 }
-.Instructions{
+.instructions{
     padding: 10px;
     font: 50px f;
     font-size: 15px;
@@ -39,3 +39,15 @@ body{
     left: 40%;
     transform: translate(-25%);
 }
+.start-game{
+    font: 15px f;
+    position: absolute;
+    top: 60%;
+    left: 20%;
+    transform: translate(-2%,-6%);
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+ .start-game.hidden {
+    opacity: 0; 
+ }
