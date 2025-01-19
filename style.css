@@ -32,7 +32,8 @@ body{
 }
 .instructions{
     padding: 10px;
-    font: 50px f;
+    font: 55px f;
+    font-size: medium;
     font-size: 15px;
     position: absolute;
     top: 30%;
@@ -43,7 +44,7 @@ body{
     text-align: center;
 }
 .start-game{
-    font: 15px f;
+    font: 17px f;
     position: absolute;
     top: 80%;
     left: 47%;
