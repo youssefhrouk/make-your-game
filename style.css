@@ -37,16 +37,20 @@ body{
     position: absolute;
     top: 30%;
     left: 40%;
-    transform: translate(-25%);
+    transform: translate(-40%);
+}
+.instructions p{
+    text-align: center;
 }
 .start-game{
     font: 15px f;
     position: absolute;
     top: 80%;
-    left: 30%;
-    transform: translate(-2%,-6%);
+    left: 45%;
+    transform: translate(-50%);
     opacity: 1;
     transition: opacity 0.5s ease;
+    text-align: center;
 }
  .start-game.hidden {
     opacity: 0; 
