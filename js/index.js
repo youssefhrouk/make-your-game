@@ -13,6 +13,12 @@ export function createEnemies(enemyCount){
     const enemy = document.createElement('div');
     enemy.classList.add("enemy");
     gameContainer.appendChild(enemy);
+    enemy.style.top = `${Math.floor(Math.random()*400)}px`;
+    enemy.style.left = `${Math.floor(Math.random()*600)}px`;
+    enemy.style.background = "red";
+    enemy.style.width = "20px";
+    enemy.style.height = "20px";
+    enemy.style.borderRadius = "50%";
   
   }
   

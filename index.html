@@ -3,51 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="style.css" rel="stylesheet" type="text/css">
   <title></title>
 </head>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    margin : 0;
-    padding : 0;
-    background-color: grey;
-    }
-  #game-container {
-    /* background-color: gray; */
-    position: relative;
-    align-items: center;
-    margin: 0 auto;
-    /* border: 1px solid black; */
-    width: 800px;
-    height: 600px;
-    overflow: hidden;
-  }
-  #score {
-    font-size: large;    
-  }
-  #ui {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    font-size: large;
-    }
-    #boxEnemy {
-      position: absolute;
-      width: 65px;
-      height: 50px;
-      margin: 50px 60px;
-       background-image: url("./images/alien.png");
-      background-size: cover;
-    }
-    #boxShooter {
-      background-color: rgb(174, 238, 0);
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-</style>
 <body>
-  <div id="game-container">
+  <div class="box">
     <dialog id="isSmallScreen" class="isSmallScreen">
       <form method="dialog">
         <p>Please make your browser window larger, if you wish to play the game</p>
@@ -68,13 +28,27 @@
         <button id="restart" value="restart">Restart</button>
       </form>
     </dialog>
-    <div id="ui">
-      <div>Score: <span id="score">0</span></div>
-      <div>Bullets: <span id="bullets">3</span></div>
+    <div class="title">
+      <p class="game-title">Space Invaders</p>
+      <div class="Instructions">
+        <p>Instructions:</p>
+        <p>Use left/right arrow to move the ship</p>
+        <p>Space to shoot</p>
+        <p>Esc to pause</p>
+        <p>Press f5 to restart</p>
+      </div>
+      <p class class="start-game">Press enter to start the game</p>
+
     </div>
-    <div id="boxEnemy"></div>
-    <div id="boxShooter"></div>
+    <div class="game" hidden>
+      <div class="lives"></div>
+      <div class="time"></div>
+      <div class="score"></div>
+      <div class="enemies"></div>
+    </div>
+
+
   </div>
-  <script src="js/index.js"></script>
+  <script type="module" src="js/index.js"></script>
 </body>
 </html>
