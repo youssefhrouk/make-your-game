@@ -36,7 +36,7 @@ body{
     font-size: 15px;
     position: absolute;
     top: 30%;
-    left: 40%;
+    left: 42%;
     transform: translate(-40%);
 }
 .instructions p{
@@ -46,11 +46,10 @@ body{
     font: 15px f;
     position: absolute;
     top: 80%;
-    left: 45%;
+    left: 47%;
     transform: translate(-50%);
     opacity: 1;
     transition: opacity 0.5s ease;
-    text-align: center;
 }
  .start-game.hidden {
     opacity: 0; 
