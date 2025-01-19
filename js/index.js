@@ -61,5 +61,5 @@ window.onload = function() {
   // Toggle visibility every 3 seconds
   setInterval(() => {
       startGameElement.classList.toggle('hidden');
-  }, 1000);
+  }, 700);
 };
