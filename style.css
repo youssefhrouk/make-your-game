@@ -52,6 +52,6 @@ body{
     opacity: 1;
     transition: opacity 0.5s ease;
 }
- .start-game.hidden {
-    opacity: 0; 
+.hidden {
+    opacity: 0.2; 
  }
