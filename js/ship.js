@@ -1,21 +1,24 @@
 import { boxBCR,gameDiv } from "./index.js";
-import { gameRunning } from "./index.js";
+import { gameRunning,gameKeys } from "./index.js";
 
 const ship = document.createElement("img");
 
+let shipX,shipY;
+
 export function createShip(){
- let shipX = boxBCR.width/2-25;
- let shipY = boxBCR.height-75;
- ship.src = "../images/alien.png";
- ship.setAttribute("class","ship");
- ship.width = 50;
- ship.style.transform = `translate(${shipX}px,${shipY}px)`;
- gameDiv.appendChild(ship)
-}
+    shipX = boxBCR.width/2-25;
+    shipY = boxBCR.height-75;
+    ship.src = "../images/alien.png";
+    ship.setAttribute("class","ship");
+    ship.width = 50;
+    ship.style.transform = `translate(${shipX}px,${shipY}px)`;
+    gameDiv.appendChild(ship)
+ }
 
 export function moveShip(){
     if (gameRunning){
-        
+        if(gameKeys.ArrowLeft && shipX >= 2) shipX -=5;
+        if(gameKeys.ArrowRight && shipX < boxBCR.width - 52) shipX += 5;
     }
-
+    ship.style.transform = `translate(${shipX}px,${shipY}px)`;
 }
