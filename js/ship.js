@@ -13,12 +13,16 @@ export function createShip(){
     ship.width = 50;
     ship.style.transform = `translate(${shipX}px,${shipY}px)`;
     gameDiv.appendChild(ship)
- }
+    console.log("zzzz");
+}
 
 export function moveShip(){
     if (gameRunning){
+        
         if(gameKeys.ArrowLeft && shipX >= 2) shipX -=5;
         if(gameKeys.ArrowRight && shipX < boxBCR.width - 52) shipX += 5;
+        
     }
     ship.style.transform = `translate(${shipX}px,${shipY}px)`;
+    
 }

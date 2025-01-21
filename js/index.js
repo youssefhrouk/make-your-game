@@ -4,8 +4,8 @@ export const gameDiv = document.querySelector(".game");
 export let boxBCR = document.querySelector(".box").getBoundingClientRect;
 
 export let gameRunning = false;
-export let gameOver = false;
-export let gamePaused = false;
+// export let gameOver = false;
+// export let gamePaused = false;
 export const gameKeys = {
   ArrowLeft : false,
   ArrowRight : false,
@@ -21,33 +21,51 @@ window.onload = function() {
       startGameElement.classList.toggle('hidden');
   }, 700);
 };
+
 window.addEventListener("load",()=>{
+  
   createShip();
 
 })
 
 document.addEventListener("keydown",(e)=>{
-  if(e.code=="Enter" && !gameRunning){
-    // console.log(e.key);
+  if (e.code in gameKeys){
+    gameKeys[e.code] = true;
+  }
+  if(e.code=="Enter"){
+    if (gameRunning){
+
+      console.log("par iciiii");
+    }
+    
     startGame();
   }
- // Update gameKeys for movement
- if (e.code in gameKeys) {
-  gameKeys[e.code] = true;
-}
+
 });
+
+document.addEventListener("keyup",(e)=>{
+  if (e.code in gameKeys){
+    gameKeys[e.code] = false;
+  }
+
+  
+})
 
 
 
 function startGame(){
   if (!gameRunning){
-    gameRunning = true;    
-    console.log("Game started!");
+    gameRunning = true;  
 
+    console.log("Game started! 1111111111",gameRunning);
+    
+    
   }
-  moveShip();
   requestAnimationFrame(startGame);
 
+  
+  moveShip();  
 }
 
 startGame();
+  // console.log("datdgh 086666666");
