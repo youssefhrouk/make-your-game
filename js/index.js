@@ -30,7 +30,7 @@ document.addEventListener("keydown", (e) => {
   if (e.code === "ArrowLeft") gameKeys['ArrowLeft'] = true;
   if (e.code === "ArrowRight") gameKeys['ArrowRight'] = true;
   
-  if (e.code == "Space" || e.key === " " ) {
+  if (e.code == "Space" || e.key === " ") {
       if (gameRunning){
 
         gameKeys["Space"] = true;
@@ -43,6 +43,7 @@ document.addEventListener("keydown", (e) => {
 
     
   }
+
 
 });
 
