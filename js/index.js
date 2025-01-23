@@ -1,4 +1,5 @@
 import { createShip, moveShip } from "./ship.js";
+import { createEnemies } from "./alien.js";
 
 export const gameDiv = document.querySelector(".game");
 export let boxBCR = document.querySelector(".box").getBoundingClientRect();
@@ -14,6 +15,7 @@ export const gameKeys = {
 
 window.addEventListener("load", () => {
   createShip();
+  createEnemies(34);
   const startGameElement = document.getElementById('startGame');
 
   setInterval(() => {
