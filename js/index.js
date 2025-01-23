@@ -16,7 +16,7 @@ export const gameKeys = {
 window.addEventListener("load", () => {
   createShip();
   createEnemies(34);
-  const startGameElement = document.getElementById('startGame');
+
 
   setInterval(() => {
     startGameElement.classList.toggle('hidden');

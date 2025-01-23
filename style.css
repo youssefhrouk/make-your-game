@@ -1,27 +1,29 @@
 @font-face {
-    font-family:f;
+    font-family: f;
     src: url('./fonts/Bruce\ Forever.ttf');
 }
 
-body{
+body {
     padding: 0;
     margin: 0;
     min-width: 950px;
-    background-color: RGB(24,32,48);
+    background-color: RGB(24, 32, 48);
     color: rgb(226, 59, 59);
 }
-.box{
+
+.box {
     z-index: 0;
     background-color: black;
     width: 900px;
     height: 600px;
     border: 1px solid white;
-    position:absolute;
+    position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
 }
-.game-title{
+
+.game-title {
     font: 50px f;
     position: absolute;
     left: 30%;
@@ -29,7 +31,8 @@ body{
     transform: translate(-20%);
     white-space: nowrap;
 }
-.instructions{
+
+.instructions {
     padding: 10px;
     font: 55px f;
     font-size: medium;
@@ -39,10 +42,12 @@ body{
     left: 42%;
     transform: translate(-40%);
 }
-.instructions p{
+
+.instructions p {
     text-align: center;
 }
-.start-game{
+
+.start-game {
     font: 17px f;
     position: absolute;
     top: 80%;
@@ -51,13 +56,20 @@ body{
     opacity: 1;
     transition: opacity 0.5s ease;
 }
-.hidden {
-    opacity: 0.2; 
- }  
 
-img {
-    position: absolute;   
-} 
+.hidden {
+    opacity: 0.2;
+}
+
+img { 
+    position: absolute;
+ }
+
 .game {
     will-change: transform;
+}
+
+.enemies {
+    will-change: transform;
+    
 }

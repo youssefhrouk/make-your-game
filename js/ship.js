@@ -16,7 +16,6 @@ export function createShip(){
 }
 
 export function moveShip(){
-    console.log("Moving ship..."); // Debug
     if (gameRunning){
         if(gameKeys.ArrowLeft && shipX >= 2) shipX -=5;
         if(gameKeys.ArrowRight && shipX < boxBCR.width - 52) shipX += 5;        
