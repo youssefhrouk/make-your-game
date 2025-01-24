@@ -4,8 +4,6 @@
 }
 
 body {
-    padding: 0;
-    margin: 0;
     min-width: 950px;
     background-color: RGB(24, 32, 48);
     color: rgb(226, 59, 59);
@@ -33,10 +31,8 @@ body {
 }
 
 .instructions {
-    padding: 10px;
-    font: 55px f;
-    font-size: medium;
-    font-size: 15px;
+    font: 17px f;
+
     position: absolute;
     top: 30%;
     left: 42%;
@@ -48,7 +44,7 @@ body {
 }
 
 .start-game {
-    font: 17px f;
+    font: 15px f;
     position: absolute;
     top: 80%;
     left: 47%;
@@ -56,20 +52,26 @@ body {
     opacity: 1;
     transition: opacity 0.5s ease;
 }
-
+@keyframes flash {
+    50% {
+      opacity: 0.3;
+    }
+  }
 .hidden {
     opacity: 0.2;
 }
 
-img { 
+/* img { 
     position: absolute;
- }
+ } */
 
 .game {
     will-change: transform;
 }
 
 .enemies {
+    position: relative; 
     will-change: transform;
-    
+    width: 400px; 
+    height: auto;
 }

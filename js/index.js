@@ -1,5 +1,5 @@
 import { createShip, moveShip } from "./ship.js";
-import { createEnemies } from "./alien.js";
+import { createEnemies } from "./enemy.js";
 
 export const gameDiv = document.querySelector(".game");
 export let boxBCR = document.querySelector(".box").getBoundingClientRect();
@@ -15,11 +15,12 @@ export const gameKeys = {
 
 window.addEventListener("load", () => {
   createShip();
-  createEnemies(34);
+  createEnemies(32);
+  const startGame = document.getElementById("startGame");
 
 
   setInterval(() => {
-    startGameElement.classList.toggle('hidden');
+    startGame.classList.toggle('hidden');
   }, 700);
   
 });
@@ -57,6 +58,8 @@ document.addEventListener("keyup", (e) => {
 
 
 function startGame() {
+  moveEnemies();
+
   moveShip();
   requestAnimationFrame(startGame);
 

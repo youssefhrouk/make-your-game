@@ -6,8 +6,8 @@ const ship = document.createElement("img");
 let shipX,shipY;
 
 export function createShip(){
-    shipX = boxBCR.width/2-25;
-    shipY = boxBCR.height-75;
+    shipX = boxBCR.width/2-25
+    shipY = boxBCR.height-75
     ship.src = "../images/ship.png";
     ship.setAttribute("class","ship");
     ship.width = 50;
