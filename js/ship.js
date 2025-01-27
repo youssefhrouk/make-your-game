@@ -3,7 +3,9 @@ import { gameRunning,gameKeys } from "./index.js";
 
 const ship = document.createElement("img");
 
-let shipX,shipY;
+export let shipX,shipY;
+export let bulletExists = false;
+
 
 export function createShip(){
     shipX = boxBCR.width/2-25

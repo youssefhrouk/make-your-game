@@ -1,5 +1,5 @@
 import { createShip, moveShip } from "./ship.js";
-import { createEnemies,moveEnemies } from "./enemy.js";
+import { createEnemies,createFire,moveEnemies } from "./enemy.js";
 
 export const gameDiv = document.querySelector(".game");
 export let boxBCR = document.querySelector(".box").getBoundingClientRect();
@@ -44,6 +44,7 @@ document.addEventListener("keydown", (e) => {
       if (gameRunning){
 
         gameKeys["Space"] = true;
+
       }
       if (!gameRunning){
         titleDiv.remove();
@@ -68,6 +69,7 @@ function startGame() {
   
   moveShip();
   moveEnemies();
+  if (gameKeys.Space )
   requestAnimationFrame(startGame);
 
 }
