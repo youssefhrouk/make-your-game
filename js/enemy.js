@@ -1,8 +1,10 @@
-import { boxBCR,gameDiv } from "./index.js";
+import { boxBCR,gameDiv, gameOver } from "./index.js";
 import { gameRunning } from "./index.js";
-
 const enemyDiv = document.querySelector(".enemies");
-let enemyDirection;
+
+let enemyDirection = 1, enemyX =30 , enemyY = 50;
+export let windowFocused = true;
+
 
 window.addEventListener('focus', () => {
     windowFocused = true;
@@ -11,11 +13,9 @@ window.addEventListener('focus', () => {
 window.addEventListener('blur', () => {
     windowFocused = false;
 });
-let enemyX , enemyY;
+
+
 export function createEnemies(enemyCount) {
-    enemyDirection = 1;
-    enemyX = boxBCR.width / 2 - 200;
-    enemyY = 0;
     enemyDiv.style.width = '400px';
     enemyDiv.style.transform = `translate(${enemyX}px, ${enemyY}px)`;
 
@@ -40,19 +40,29 @@ export function createEnemies(enemyCount) {
         enemy.style.position = 'absolute';
         enemy.style.left = `${x}px`;
         enemy.style.top = `${y}px`; 
-
         enemyDiv.appendChild(enemy);
     }
 }
 
+
 export function moveEnemies() {
-    if (gameRunning) {
-        console.log("here");
-        
+    if (gameRunning && windowFocused) {
+        if (enemyTouching()) {
             enemyDirection *= -1;
-            enemyY += 20;
-        
+            enemyY += 50;
+        }
         enemyX += enemyDirection;
     }
     enemyDiv.style.transform = `translate(${enemyX}px, ${enemyY}px)`
+}
+
+function enemyTouching() {
+    const enemies = document.querySelectorAll('.enemy');
+    let touching = false;
+    enemies.forEach((enemy) => {
+        const enemyBCR = enemy.getBoundingClientRect();
+        if (enemyBCR.bottom > boxBCR.bottom - 80) gameLost();
+        if (enemyBCR.right >= boxBCR.right || enemyBCR.left <= boxBCR.left) touching = true;
+    }) 
+    return touching;
 }

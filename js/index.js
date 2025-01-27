@@ -1,5 +1,5 @@
 import { createShip, moveShip } from "./ship.js";
-import { createEnemies } from "./enemy.js";
+import { createEnemies,moveEnemies } from "./enemy.js";
 
 export const gameDiv = document.querySelector(".game");
 export let boxBCR = document.querySelector(".box").getBoundingClientRect();
@@ -12,6 +12,13 @@ export const gameKeys = {
   ArrowRight: false,
   Space: false,
 }
+export const resumeBtn = document.getElementById("resume");
+
+resumeBtn.addEventListener("click",()=>{
+  pauseScreen.close();
+  gamePaused = false;
+  startGame();
+})
 
 window.addEventListener("load", () => {
   createShip();
@@ -58,11 +65,23 @@ document.addEventListener("keyup", (e) => {
 
 
 function startGame() {
-  moveEnemies();
-
+  
   moveShip();
+  moveEnemies();
   requestAnimationFrame(startGame);
 
 }
 
+export function gameLost(){
+  gameRunning = false;
+  gameOver = true;
+  gameOverScreen.show();
+}
+
+
 startGame();
+
+
+// function createBullets(){
+
+// }
