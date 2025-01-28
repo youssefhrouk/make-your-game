@@ -73,25 +73,43 @@ function enemyTouching() {
     return touching;
 }
 
-export function createFire(){
+export function createFire() {
     const fire = document.createElement("div");
     fire.className = "fire";
     fire.style.position = "absolute";
-    fire.style.left = `${shipX + 20}px`; // Adjust fire position relative to the ship
-    fire.style.top = `${shipY}px`; // Start fire at the ship's top
-    fire.style.width = "10px";
-    fire.style.height = "20px";
+    fire.style.left = `${shipX + 20}px`;
+    fire.style.top = `${shipY}px`;
+    fire.style.width = "5px";
+    fire.style.height = "4px";
     fire.style.backgroundColor = "orange";
     gameDiv.appendChild(fire);
 
-    // Animate the fire moving upward
     animateFire(fire);
-    }
-    // Animate the fire moving upward
+}
+
 function animateFire(fire) {
     const fireInterval = setInterval(() => {
         const currentTop = parseInt(fire.style.top, 10);
-        fire.style.top = `${currentTop - 5}px`; // Move fire upward
+        fire.style.top = `${currentTop - 5}px`;
+
+        // Check for collisions with enemies
+        const enemies = document.querySelectorAll('.enemy');
+        enemies.forEach((enemy) => {
+            const enemyBCR = enemy.getBoundingClientRect();
+            const fireBCR = fire.getBoundingClientRect();
+
+            if (
+                fireBCR.left < enemyBCR.right &&
+                fireBCR.right > enemyBCR.left &&
+                fireBCR.top < enemyBCR.bottom &&
+                fireBCR.bottom > enemyBCR.top
+            ) {
+                // Collision detected
+                enemy.remove();
+                fire.remove();
+                clearInterval(fireInterval);
+            }
+        });
 
         // Remove fire when it goes off-screen
         if (currentTop < 0) {
