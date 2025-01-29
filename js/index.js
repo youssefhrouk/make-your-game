@@ -1,4 +1,4 @@
-import { createShip, moveShip, shoot } from "./ship.js";
+import { createShip, moveShip} from "./ship.js";
 import { createEnemies, createFire, moveEnemies } from "./enemy.js";
 
 export const gameDiv = document.querySelector(".game");
@@ -37,7 +37,8 @@ document.addEventListener("keydown", (e) => {
   if (e.code == "Space" || e.key === " ") {
     if (gameRunning) {
       gameKeys["Space"] = true;
-      shoot(); // Call the shoot function
+      // shoot(); // Call the shoot function
+      createFire();
     }
     if (!gameRunning) {
       titleDiv.remove();

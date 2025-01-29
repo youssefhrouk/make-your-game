@@ -1,6 +1,5 @@
 import { boxBCR, gameDiv } from "./index.js";
-import { gameRunning } from "./index.js";
-import { shipX, shipY } from "./ship.js";
+import { gameRunning,gameKeys } from "./index.js";
 
 const ship = document.createElement("img");
 
@@ -26,12 +25,12 @@ export function moveShip() {
     ship.style.transform = `translate(${shipX}px,${shipY}px)`;
 }
 
-export function shoot() {
-    if (!bulletExists) {
-        bulletExists = true;
-        // Logic to create and fire a bullet goes here
-        setTimeout(() => {
-            bulletExists = false; // Reset after cooldown
-        }, 500); // Cooldown duration
-    }
-}
+// export function shoot() {
+//     if (!bulletExists) {
+//         bulletExists = true;
+//         // Logic to create and fire a bullet goes here
+//         setTimeout(() => {
+//             bulletExists = false; // Reset after cooldown
+//         }, 500); // Cooldown duration
+//     }
+// }
