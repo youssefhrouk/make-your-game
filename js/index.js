@@ -4,6 +4,7 @@ import { createEnemies, createFire, moveEnemies } from "./enemy.js";
 export const gameDiv = document.querySelector(".game");
 export let boxBCR = document.querySelector(".box").getBoundingClientRect();
 const titleDiv = document.querySelector(".title");
+const gameOverScreen = document.getElementById("gameOverScreen");
 export let gameRunning = false;
 export let gameOver = false;
 export let gamePaused = false;
@@ -12,12 +13,19 @@ export const gameKeys = {
   ArrowRight: false,
   Space: false,
 };
-export const resumeBtn = document.getElementById("resume");
+const resumeBtn = document.getElementById("resume");
+const restartBtn = document.getElementById("restart");
 
-resumeBtn.addEventListener("click", () => {
+resumeBtn.addEventListener("click", ()=> {
   pauseScreen.close();
   gamePaused = false;
   startGame();
+});
+restartBtn.addEventListener("click",()=>{
+  pauseScreen.close();
+  gamePaused = false; 
+  startGame();
+  moveBullet();
 });
 
 window.addEventListener("load", () => {
@@ -46,6 +54,17 @@ document.addEventListener("keydown", (e) => {
       gameRunning = true;
     }
   }
+  if (e.code == "Escape"){
+    if (gameRunning && !gamePaused){
+      pauseScreen.show();
+      gamePaused = true;
+    }else if(gamePaused){
+      pauseScreen.close();
+      gamePaused = false;
+      startGame();
+      createFire();
+    }
+  } 
 });
 
 document.addEventListener("keyup", (e) => {
@@ -55,15 +74,18 @@ document.addEventListener("keyup", (e) => {
 });
 
 function startGame() {
+ 
   moveShip();
   moveEnemies();
   requestAnimationFrame(startGame);
+  
 }
 
 export function gameLost() {
   gameRunning = false;
   gameOver = true;
   gameOverScreen.show();
+
 }
 
 startGame();

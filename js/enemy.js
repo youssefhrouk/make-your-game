@@ -1,10 +1,12 @@
-import { boxBCR,gameDiv, gameOver } from "./index.js";
+import { boxBCR,gameDiv, gameOver,gameLost } from "./index.js";
 import { gameRunning } from "./index.js";
 import { shipX,shipY } from "./ship.js";
 const enemyDiv = document.querySelector(".enemies");
 
 let enemyDirection = 1, enemyX =30 , enemyY = 50;
 export let windowFocused = true;
+export let bulletExists = false;
+let bulletCount = 0;
 
 
 window.addEventListener('focus', () => {
@@ -55,7 +57,7 @@ export function moveEnemies() {
     if (gameRunning && windowFocused) {
         if (enemyTouching()) {
             enemyDirection *= -1;
-            enemyY += 20;
+            enemyY += 40;
         }
         enemyX += enemyDirection;
     }
@@ -67,12 +69,12 @@ function enemyTouching() {
     let touching = false;
     enemies.forEach((enemy) => {
         const enemyBCR = enemy.getBoundingClientRect();
+        
         if (enemyBCR.bottom > boxBCR.bottom - 80) gameLost();
         if (enemyBCR.right >= boxBCR.right || enemyBCR.left <= boxBCR.left) touching = true;
-    }) 
+    })
     return touching;
 }
-
 export function createFire() {
     const fire = document.createElement("div");
     fire.className = "fire";

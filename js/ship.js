@@ -20,17 +20,9 @@ export function moveShip() {
     if (gameRunning) {
         if (gameKeys.ArrowLeft && shipX >= 2) shipX -= 5;
         if (gameKeys.ArrowRight && shipX < boxBCR.width - 52) shipX += 5;
-    }
+    } 
 
     ship.style.transform = `translate(${shipX}px,${shipY}px)`;
 }
 
-// export function shoot() {
-//     if (!bulletExists) {
-//         bulletExists = true;
-//         // Logic to create and fire a bullet goes here
-//         setTimeout(() => {
-//             bulletExists = false; // Reset after cooldown
-//         }, 500); // Cooldown duration
-//     }
-// }
+

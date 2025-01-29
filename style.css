@@ -75,3 +75,15 @@ body {
     width: 400px; 
     height: auto;
 }
+
+.ship {
+    position: absolute;
+    transition: transform 0.05s;
+  }
+  .fire {
+    position: absolute;
+    background-color: red;
+    width: 5px;
+    height: 10px;
+  }
+  
