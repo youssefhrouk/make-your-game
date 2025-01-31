@@ -11,7 +11,7 @@ export function createShip() {
     shipY = boxBCR.height - 75;
     ship.src = "../images/ship.png";
     ship.setAttribute("class", "ship");
-    ship.width = 50;
+    ship.width = 40;
     ship.style.transform = `translate(${shipX}px,${shipY}px)`;
     gameDiv.appendChild(ship);
 }

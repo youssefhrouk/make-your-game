@@ -15,7 +15,7 @@ export const gameKeys = {
 };
 const resumeBtn = document.getElementById("resume");
 const restartBtn = document.getElementById("restart");
-
+const pauseScreen = document.getElementById("pauseScreen");
 resumeBtn.addEventListener("click", ()=> {
   pauseScreen.close();
   gamePaused = false;
@@ -25,7 +25,6 @@ restartBtn.addEventListener("click",()=>{
   pauseScreen.close();
   gamePaused = false; 
   startGame();
-  moveBullet();
 });
 
 window.addEventListener("load", () => {
@@ -42,10 +41,9 @@ document.addEventListener("keydown", (e) => {
   if (e.code === "ArrowLeft") gameKeys["ArrowLeft"] = true;
   if (e.code === "ArrowRight") gameKeys["ArrowRight"] = true;
 
-  if (e.code == "Space" || e.key === " ") {
+  if ((e.code == "Space" || e.key === " ")&& !gameKeys["Space"]) {
     if (gameRunning) {
       gameKeys["Space"] = true;
-      // shoot(); // Call the shoot function
       createFire();
     }
     if (!gameRunning) {
@@ -71,13 +69,18 @@ document.addEventListener("keyup", (e) => {
   if (e.code in gameKeys) {
     gameKeys[e.code] = false;
   }
+  if (e.code == "Space"){
+    gameKeys["Space"] = false
+  }
 });
 
 function startGame() {
- 
+ if (!gamePaused){
   moveShip();
   moveEnemies();
   requestAnimationFrame(startGame);
+ }
+
   
 }
 
