@@ -1,6 +1,6 @@
 import { boxBCR,gameDiv, gameOver,gameLost } from "./index.js";
 import { gameRunning } from "./index.js";
-import { shipX,shipY } from "./ship.js";
+// import { shipX,shipY } from "./ship.js";
 const enemyDiv = document.querySelector(".enemies");
 
 let enemyDirection = 1, enemyX =30 , enemyY = 50;
@@ -75,46 +75,4 @@ function enemyTouching() {
     })
     return touching;
 }
-export function createFire() {
-    const fire = document.createElement("div");
-    fire.className = "fire";
-    fire.style.position = "absolute";
-    fire.style.left = `${shipX + 20}px`;
-    fire.style.top = `${shipY}px`;
-    fire.style.width = "5px";
-    fire.style.height = "4px";
-    fire.style.backgroundColor = "orange";
-    gameDiv.appendChild(fire);
-    animateFire(fire);
-}
 
-function animateFire(fire) {
-    const fireInterval = setInterval(() => {
-        const currentTop = parseInt(fire.style.top, 10);
-        fire.style.top = `${currentTop - 5}px`;
-
-        // Check for collisions with enemies
-        const enemies = document.querySelectorAll('.enemy');
-        enemies.forEach((enemy) => {
-            const enemyBCR = enemy.getBoundingClientRect();
-            const fireBCR = fire.getBoundingClientRect();
-            if (
-                fireBCR.left < enemyBCR.right &&
-                fireBCR.right > enemyBCR.left &&
-                fireBCR.top < enemyBCR.bottom &&
-                fireBCR.bottom > enemyBCR.top
-            ) {
-                // Collision detected
-                enemy.remove();
-                fire.remove();
-                clearInterval(fireInterval);
-            }
-        });
-
-        // Remove fire when it goes off-screen
-        if (currentTop < 0) {
-            clearInterval(fireInterval);
-            fire.remove();
-        }
-    }, 20);
-}

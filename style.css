@@ -87,3 +87,9 @@ body {
     height: 10px;
   }
   
+.fire {
+    position: absolute;
+    width: 3px;
+    height: 15px;
+    background-color: white;
+}

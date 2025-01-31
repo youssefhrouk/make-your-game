@@ -1,5 +1,5 @@
-import { createShip, moveShip } from "./ship.js";
-import { createEnemies, createFire, moveEnemies } from "./enemy.js";
+import { createShip, moveShip, createFire } from "./ship.js";
+import {  moveEnemies,createEnemies } from "./enemy.js";
 
 export const gameDiv = document.querySelector(".game");
 export let boxBCR = document.querySelector(".box").getBoundingClientRect();
@@ -47,14 +47,13 @@ document.addEventListener("keydown", (e) => {
   if (e.code === "ArrowLeft") gameKeys["ArrowLeft"] = true;
   if (e.code === "ArrowRight") gameKeys["ArrowRight"] = true;
 
-  const currentTime = Date.now(); // Get current timestamp
+  const currentTime = Date.now();
 
-  // Handle shooting
   if ((e.code === "Space" || e.key === " ") && !gameKeys["Space"]) {
     if (gameRunning && currentTime - lastShotTime >= shotCooldown) {
-      gameKeys["Space"] = true; // Prevent holding down space
-      lastShotTime = currentTime; // Update last shot time
-      createFire(); // Call shooting function
+      gameKeys["Space"] = true;
+      lastShotTime = currentTime; 
+      createFire();
     }
 
     if (!gameRunning) {
@@ -88,7 +87,7 @@ document.addEventListener("keyup", (e) => {
 
 // Main game loop
 function startGame() {
-  if (!gamePaused) {
+  if (!gamePaused && !gameOver) {
     moveShip();
     moveEnemies();
     requestAnimationFrame(startGame); // Loop the game
