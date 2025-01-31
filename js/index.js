@@ -37,35 +37,88 @@ window.addEventListener("load", () => {
   }, 700);
 });
 
+let lastShotTime = 0; // Track last shot time
+const shotCooldown = 1000; // 3 seconds (3000 milliseconds)
+
 document.addEventListener("keydown", (e) => {
   if (e.code === "ArrowLeft") gameKeys["ArrowLeft"] = true;
   if (e.code === "ArrowRight") gameKeys["ArrowRight"] = true;
+  const currentTime = Date.now(); // Get current timestamp
 
+  if ((e.code == "Space" || e.key === " ") && !gameKeys["Space"]) {
+    if (gameRunning && currentTime - lastShotTime >= shotCooldown) {
+      gameKeys["Space"] = true; // Prevent holding
+      lastShotTime = currentTime; // Update last shot time
+      createFire(); // Call shooting function
   if ((e.code == "Space" || e.key === " ")&& !gameKeys["Space"]) {
     if (gameRunning) {
       gameKeys["Space"] = true;
       createFire();
     }
+
     if (!gameRunning) {
       titleDiv.remove();
       gameDiv.removeAttribute("hidden");
       gameRunning = true;
     }
   }
-  if (e.code == "Escape"){
-    if (gameRunning && !gamePaused){
+
+  if (e.code == "Escape") {
+    if (gameRunning && !gamePaused) {
       pauseScreen.show();
       gamePaused = true;
-    }else if(gamePaused){
+    } else if (gamePaused) {
       pauseScreen.close();
       gamePaused = false;
       startGame();
       createFire();
     }
-  } 
+  }
 });
 
 document.addEventListener("keyup", (e) => {
+  if (e.code === "ArrowLeft") gameKeys["ArrowLeft"] = false;
+  if (e.code === "ArrowRight") gameKeys["ArrowRight"] = false;
+  if (e.code == "Space" || e.key === " ") {
+    gameKeys["Space"] = false; // Reset space key on release
+  }
+});
+
+
+// document.addEventListener("keydown", (e) => {
+//   if (e.code === "ArrowLeft") gameKeys["ArrowLeft"] = true;
+//   if (e.code === "ArrowRight") gameKeys["ArrowRight"] = true;
+
+//   if (e.code == "Space" || e.key === " ") {
+//     if (gameRunning) {
+//       gameKeys["Space"] = true;
+//       // shoot(); // Call the shoot function
+//       createFire();
+//     }
+//     if (!gameRunning) {
+//       titleDiv.remove();
+//       gameDiv.removeAttribute("hidden");
+//       gameRunning = true;
+//     }
+//   }
+//   if (e.code == "Escape"){
+//     if (gameRunning && !gamePaused){
+//       pauseScreen.show();
+//       gamePaused = true;
+//     }else if(gamePaused){
+//       pauseScreen.close();
+//       gamePaused = false;
+//       startGame();
+//       createFire();
+//     }
+//   } 
+// });
+
+// document.addEventListener("keyup", (e) => {
+//   if (e.code in gameKeys) {
+//     gameKeys[e.code] = false;
+//   }
+// });
   if (e.code in gameKeys) {
     gameKeys[e.code] = false;
   }
