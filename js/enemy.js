@@ -22,10 +22,10 @@ export function createEnemies(enemyCount) {
  
 
     const enemiesPerRow = 8; 
-    const enemyWidth = 45; 
-    const enemyHeight = 45; 
-    const gapX = 5;  
-    const gapY = 5; 
+    const enemyWidth = 35; 
+    const enemyHeight = 35; 
+    const gapX = 15;  
+    const gapY = 15; 
     enemyX = boxBCR.width / 2 - 200;
     enemyY = 100;
 
