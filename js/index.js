@@ -1,4 +1,4 @@
-import { createShip, moveShip} from "./ship.js";
+import { createShip, moveShip } from "./ship.js";
 import { createEnemies, createFire, moveEnemies } from "./enemy.js";
 
 export const gameDiv = document.querySelector(".game");
@@ -16,44 +16,45 @@ export const gameKeys = {
 const resumeBtn = document.getElementById("resume");
 const restartBtn = document.getElementById("restart");
 const pauseScreen = document.getElementById("pauseScreen");
-resumeBtn.addEventListener("click", ()=> {
+
+resumeBtn.addEventListener("click", () => {
   pauseScreen.close();
   gamePaused = false;
   startGame();
 });
-restartBtn.addEventListener("click",()=>{
+
+restartBtn.addEventListener("click", () => {
   pauseScreen.close();
-  gamePaused = false; 
+  gamePaused = false;
   startGame();
 });
+
+let lastShotTime = 0; // Track last shot time
+const shotCooldown = 1000; // 1 second (1000 milliseconds)
 
 window.addEventListener("load", () => {
   createShip();
   createEnemies(32);
-  const startGame = document.getElementById("startGame");
+  const startGameBtn = document.getElementById("startGame");
 
   setInterval(() => {
-    startGame.classList.toggle("hidden");
+    startGameBtn.classList.toggle("hidden");
   }, 700);
 });
 
-let lastShotTime = 0; // Track last shot time
-const shotCooldown = 1000; // 3 seconds (3000 milliseconds)
-
+// Event listener for keydown actions
 document.addEventListener("keydown", (e) => {
   if (e.code === "ArrowLeft") gameKeys["ArrowLeft"] = true;
   if (e.code === "ArrowRight") gameKeys["ArrowRight"] = true;
+
   const currentTime = Date.now(); // Get current timestamp
 
-  if ((e.code == "Space" || e.key === " ") && !gameKeys["Space"]) {
+  // Handle shooting
+  if ((e.code === "Space" || e.key === " ") && !gameKeys["Space"]) {
     if (gameRunning && currentTime - lastShotTime >= shotCooldown) {
-      gameKeys["Space"] = true; // Prevent holding
+      gameKeys["Space"] = true; // Prevent holding down space
       lastShotTime = currentTime; // Update last shot time
       createFire(); // Call shooting function
-  if ((e.code == "Space" || e.key === " ")&& !gameKeys["Space"]) {
-    if (gameRunning) {
-      gameKeys["Space"] = true;
-      createFire();
     }
 
     if (!gameRunning) {
@@ -63,7 +64,8 @@ document.addEventListener("keydown", (e) => {
     }
   }
 
-  if (e.code == "Escape") {
+  // Pause and unpause game on Escape key
+  if (e.code === "Escape") {
     if (gameRunning && !gamePaused) {
       pauseScreen.show();
       gamePaused = true;
@@ -71,77 +73,32 @@ document.addEventListener("keydown", (e) => {
       pauseScreen.close();
       gamePaused = false;
       startGame();
-      createFire();
     }
   }
 });
 
+// Event listener for keyup actions
 document.addEventListener("keyup", (e) => {
   if (e.code === "ArrowLeft") gameKeys["ArrowLeft"] = false;
   if (e.code === "ArrowRight") gameKeys["ArrowRight"] = false;
-  if (e.code == "Space" || e.key === " ") {
+  if (e.code === "Space" || e.key === " ") {
     gameKeys["Space"] = false; // Reset space key on release
   }
 });
 
-
-// document.addEventListener("keydown", (e) => {
-//   if (e.code === "ArrowLeft") gameKeys["ArrowLeft"] = true;
-//   if (e.code === "ArrowRight") gameKeys["ArrowRight"] = true;
-
-//   if (e.code == "Space" || e.key === " ") {
-//     if (gameRunning) {
-//       gameKeys["Space"] = true;
-//       // shoot(); // Call the shoot function
-//       createFire();
-//     }
-//     if (!gameRunning) {
-//       titleDiv.remove();
-//       gameDiv.removeAttribute("hidden");
-//       gameRunning = true;
-//     }
-//   }
-//   if (e.code == "Escape"){
-//     if (gameRunning && !gamePaused){
-//       pauseScreen.show();
-//       gamePaused = true;
-//     }else if(gamePaused){
-//       pauseScreen.close();
-//       gamePaused = false;
-//       startGame();
-//       createFire();
-//     }
-//   } 
-// });
-
-// document.addEventListener("keyup", (e) => {
-//   if (e.code in gameKeys) {
-//     gameKeys[e.code] = false;
-//   }
-// });
-  if (e.code in gameKeys) {
-    gameKeys[e.code] = false;
-  }
-  if (e.code == "Space"){
-    gameKeys["Space"] = false
-  }
-});
-
+// Main game loop
 function startGame() {
- if (!gamePaused){
-  moveShip();
-  moveEnemies();
-  requestAnimationFrame(startGame);
- }
-
-  
+  if (!gamePaused) {
+    moveShip();
+    moveEnemies();
+    requestAnimationFrame(startGame); // Loop the game
+  }
 }
 
 export function gameLost() {
   gameRunning = false;
   gameOver = true;
-  gameOverScreen.show();
-
+  gameOverScreen.show(); // Show game over screen
 }
 
 startGame();
