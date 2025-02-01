@@ -64,7 +64,6 @@ function animateFire(fire) {
             }
         });
 
-        // Remove fire when it goes off-screen
         if (currentTop < 0) {
             clearInterval(fireInterval);
             fire.remove();

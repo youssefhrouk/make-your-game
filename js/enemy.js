@@ -52,7 +52,6 @@ export function createEnemies(enemyCount) {
     }
 }
 
-
 export function moveEnemies() {
     if (gameRunning && windowFocused) {
         if (enemyTouching()) {
@@ -80,7 +79,7 @@ const enemyFire = document.createElement("div")
 
 enemyFire.setAttribute('class', 'enemyFire');
 
-function createEnemyFire(enemyFireX,enemyFireY){
+function createEnemyBullet(enemyFireX,enemyFireY){
     enemyFire.style.left = `${enemyFireX}px`;
     enemyFire.style.top= `${enemyFireY}px`;
     document.body.appendChild(enemyFire);
@@ -92,7 +91,7 @@ function enemyShoot() {
     const enemyBCR = randomEnemy.getBoundingClientRect();
 
     // Create a bullet from the enemy's position
-    const bullet = createEnemyFire(enemyBCR.left + enemyBCR.width / 2, enemyBCR.top + enemyBCR.height);
+    const bullet = createEnemyBullet(enemyBCR.left + enemyBCR.width / 2, enemyBCR.top + enemyBCR.height);
     
     // Move the bullet downward
     moveEnemyBullet(bullet);
@@ -115,16 +114,12 @@ function moveEnemyBullet(bullet) {
 }
 
 function isBulletHitPlayer(bulletBCR) {
-    // Check if the bullet intersects with the player's ship (assuming you have shipX, shipY)
-    const playerBCR = document.querySelector(".ship").getBoundingClientRect(); // Adjust for the player element
-    // if (playerBCR == null){
+    const playerBCR = document.querySelector(".ship").getBoundingClientRect();
         if (bulletBCR.right > playerBCR.left && bulletBCR.left < playerBCR.right &&
             bulletBCR.bottom > playerBCR.top && bulletBCR.top < playerBCR.bottom) {
-            gameLost(); // Call game over function
+            gameLost(); 
             return true;
         }
-    
-   
     return false;
 }
 function startEnemyShooting() {
@@ -133,8 +128,8 @@ function startEnemyShooting() {
             clearInterval(shootInterval);
             return;
         }
-        enemyShoot(); // Trigger the enemy shoot function
-    }, 1000); // Adjust interval for frequency of shots
+        enemyShoot(); 
+    }, 1000);
 }
 
-startEnemyShooting(); // Call the function to start shooting
+// startEnemyShooting();
