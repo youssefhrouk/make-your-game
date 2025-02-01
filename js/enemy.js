@@ -26,8 +26,8 @@ export function createEnemies(enemyCount) {
     const enemyHeight = 35; 
     const gapX = 15;  
     const gapY = 15; 
-    enemyX = boxBCR.width / 2 - 200;
-    enemyY = 100;
+    enemyX = 40;
+    enemyY = 40;
 
     enemyDiv.style.transform = `translate(${enemyX}px, ${enemyY}px)`;
     for (let i = 0; i < enemyCount; i++) {
@@ -62,6 +62,13 @@ export function moveEnemies() {
         enemyX += enemyDirection;
     }
     enemyDiv.style.transform = `translate(${enemyX}px, ${enemyY}px)`
+}
+
+export function resetEnemies() {
+    enemyX = 40;               // Start from the left
+    enemyY = 40;               // Start from the top
+    enemyDirection = 1;       // Move from left to right
+    enemyDiv.style.transform = `translate(${enemyX}px, ${enemyY}px)`;
 }
 
 function enemyTouching() {

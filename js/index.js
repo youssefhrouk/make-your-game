@@ -1,5 +1,5 @@
 import { createShip, moveShip, createFire } from "./ship.js";
-import {  moveEnemies,createEnemies } from "./enemy.js";
+import {  moveEnemies,createEnemies, resetEnemies } from "./enemy.js";
 
 export const gameDiv = document.querySelector(".game");
 export let boxBCR = document.querySelector(".box").getBoundingClientRect();
@@ -23,14 +23,30 @@ resumeBtn.addEventListener("click", () => {
   startGame();
 });
 
+function resetGame() {
+  // Reset game states
+  gameRunning = true;
+  gameOver = false;
+
+  // Clear existing enemies and fires
+  document.querySelectorAll(".enemy, .fire").forEach(el => el.remove());
+  createShip(); // Recreate the ship if missing
+  // Recreate enemies
+  createEnemies(32);
+  // Reset game variables if you have score, lives, etc.
+  lastShotTime = 0;
+}
+
 restartBtn.addEventListener("click", () => {
   pauseScreen.close();
   gamePaused = false;
+  resetGame();
+  resetEnemies();
   startGame();
 });
 
 let lastShotTime = 0; // Track last shot time
-const shotCooldown = 1000; // 1 second (1000 milliseconds)
+const shotCooldown = 800; // 1 second (1000 milliseconds)
 
 window.addEventListener("load", () => {
   createShip();
