@@ -17,6 +17,33 @@ const resumeBtn = document.getElementById("resume");
 const restartBtn = document.getElementById("restart");
 const pauseScreen = document.getElementById("pauseScreen");
 
+window.addEventListener('resize', () => {
+  boxBCR = document.querySelector(".box").getBoundingClientRect();
+  checkScreen();
+});
+const isSmallScreen = document.querySelector(".isSmallScreen")
+let gamePausedByChecker = false;
+
+function checkScreen(){
+  if (tooSmallScreen() && gameRunning && !gamePaused && !gameOver) {
+      gamePausedByChecker = true;
+      gamePaused = true;
+      isSmallScreen.show();
+    } else if (!tooSmallScreen() && gameRunning && gamePaused && gamePausedByChecker) {
+      gamePaused = false;
+      isSmallScreen.close();
+      runGame();
+      moveBullet();
+      gamePausedByChecker = false;
+    }
+    return;
+}
+
+function tooSmallScreen() {
+  return window.innerWidth <= boxBCR.width || window.innerHeight <= boxBCR.height;
+}
+
+
 resumeBtn.addEventListener("click", () => {
   pauseScreen.close();
   gamePaused = false;
