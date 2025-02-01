@@ -76,3 +76,65 @@ function enemyTouching() {
     return touching;
 }
 
+const enemyFire = document.createElement("div")
+
+enemyFire.setAttribute('class', 'enemyFire');
+
+function createEnemyFire(enemyFireX,enemyFireY){
+    enemyFire.style.left = `${enemyFireX}px`;
+    enemyFire.style.top= `${enemyFireY}px`;
+    document.body.appendChild(enemyFire);
+    return enemyFire;
+}
+function enemyShoot() {
+    const enemies = document.querySelectorAll('.enemy');
+    const randomEnemy = enemies[Math.floor(Math.random() * enemies.length)];
+    const enemyBCR = randomEnemy.getBoundingClientRect();
+
+    // Create a bullet from the enemy's position
+    const bullet = createEnemyFire(enemyBCR.left + enemyBCR.width / 2, enemyBCR.top + enemyBCR.height);
+    
+    // Move the bullet downward
+    moveEnemyBullet(bullet);
+}
+function moveEnemyBullet(bullet) {
+    const bulletSpeed = 5;
+    
+    const moveInterval = setInterval(() => {
+        const bulletBCR = bullet.getBoundingClientRect();
+
+        // Move bullet down
+        bullet.style.top = `${bulletBCR.top + bulletSpeed}px`;
+        
+        // Check for collision with player or out of bounds
+        if (bulletBCR.bottom >= boxBCR.bottom || isBulletHitPlayer(bulletBCR)) {
+            clearInterval(moveInterval);
+            bullet.remove();
+        }
+    }, 20);
+}
+
+function isBulletHitPlayer(bulletBCR) {
+    // Check if the bullet intersects with the player's ship (assuming you have shipX, shipY)
+    const playerBCR = document.querySelector(".ship").getBoundingClientRect(); // Adjust for the player element
+    // if (playerBCR == null){
+        if (bulletBCR.right > playerBCR.left && bulletBCR.left < playerBCR.right &&
+            bulletBCR.bottom > playerBCR.top && bulletBCR.top < playerBCR.bottom) {
+            gameLost(); // Call game over function
+            return true;
+        }
+    
+   
+    return false;
+}
+function startEnemyShooting() {
+    const shootInterval = setInterval(() => {
+        if (!gameRunning || !windowFocused) {
+            clearInterval(shootInterval);
+            return;
+        }
+        enemyShoot(); // Trigger the enemy shoot function
+    }, 1000); // Adjust interval for frequency of shots
+}
+
+startEnemyShooting(); // Call the function to start shooting
