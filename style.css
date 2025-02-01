@@ -80,16 +80,24 @@ body {
     position: absolute;
     transition: transform 0.05s;
   }
-  .fire {
+  /* .fire {
     position: absolute;
     background-color: red;
     width: 5px;
     height: 10px;
-  }
+  } */
   
 .fire {
     position: absolute;
     width: 3px;
     height: 15px;
-    background-color: white;
+    background-color: red;
+}
+
+.enemyFire{
+    position: absolute;
+    z-index: 5;
+    width: 5px;
+    height: 15px;
+    background-color: red;
 }
