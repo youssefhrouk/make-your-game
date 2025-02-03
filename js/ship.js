@@ -57,7 +57,6 @@ function animateFire(fire) {
                 fireBCR.top < enemyBCR.bottom &&
                 fireBCR.bottom > enemyBCR.top
             ) {
-                // Collision detected
                 enemy.remove();
                 fire.remove();
                 clearInterval(fireInterval);
@@ -70,4 +69,11 @@ function animateFire(fire) {
         }
     }, 20);
 }
+}
+function addlives(){
+    const lives = document.querySelector(".lives");
+    for (let i=0;i<3;i++){
+        const divLive = document.createElement("img");
+        divLive.src = ""
+    }
 }

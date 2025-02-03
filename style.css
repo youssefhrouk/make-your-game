@@ -5,7 +5,7 @@
 
 body {
     min-width: 950px;
-    background-color: RGB(24, 32, 48);
+    background-color: RGB(24, 30, 40);
     color: rgb(226, 59, 59);
 }
 
@@ -19,6 +19,8 @@ body {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    display: flex;
+    align-content: center;
 }
 
 .game-title {

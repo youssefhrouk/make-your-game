@@ -1,6 +1,6 @@
 import { boxBCR,gameDiv, gameOver,gameLost } from "./index.js";
 import { gameRunning } from "./index.js";
-// import { shipX,shipY } from "./ship.js";
+import { createShip} from "./ship.js";
 const enemyDiv = document.querySelector(".enemies");
 
 let enemyDirection = 1, enemyX =30 , enemyY = 50;
@@ -85,6 +85,7 @@ function createEnemyBullet(enemyFireX,enemyFireY){
     document.body.appendChild(enemyFire);
     return enemyFire;
 }
+
 function enemyShoot() {
     const enemies = document.querySelectorAll('.enemy');
     const randomEnemy = enemies[Math.floor(Math.random() * enemies.length)];
@@ -113,22 +114,26 @@ function moveEnemyBullet(bullet) {
     }, 20);
 }
 
+export let nbrlives = 3;
+
 function isBulletHitPlayer(bulletBCR) {
     const playerBCR = document.querySelector(".ship").getBoundingClientRect();
-        if (bulletBCR.right > playerBCR.left && bulletBCR.left < playerBCR.right &&
-            bulletBCR.bottom > playerBCR.top && bulletBCR.top < playerBCR.bottom) {
-            gameLost(); 
+    if (bulletBCR.right > playerBCR.left && bulletBCR.left < playerBCR.right &&
+        bulletBCR.bottom > playerBCR.top && bulletBCR.top < playerBCR.bottom) {
+            
+            nbrlives -= 1;
+
+            createShip();
             return true;
         }
     return false;
 }
-function startEnemyShooting() {
+export function startEnemyShooting() {
     const shootInterval = setInterval(() => {
-        if (!gameRunning || !windowFocused) {
-            clearInterval(shootInterval);
-            return;
+        if (gameRunning) {
+            
+            enemyShoot(); 
         }
-        enemyShoot(); 
     }, 1000);
 }
 
@@ -140,4 +145,3 @@ export function resetEnemies() {
     enemyDiv.style.transform = `translate(${enemyX}px, ${enemyY}px)`;
 }
 
-startEnemyShooting();

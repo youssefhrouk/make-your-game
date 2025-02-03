@@ -1,5 +1,5 @@
 import { createShip, moveShip, createFire } from "./ship.js";
-import {  moveEnemies,createEnemies ,resetEnemies } from "./enemy.js";
+import {  moveEnemies,createEnemies ,resetEnemies, windowFocused, startEnemyShooting,nbrlives } from "./enemy.js";
 
 export const gameDiv = document.querySelector(".game");
 export let boxBCR = document.querySelector(".box").getBoundingClientRect();
@@ -8,21 +8,30 @@ const gameOverScreen = document.getElementById("gameOverScreen");
 export let gameRunning = false;
 export let gameOver = false;
 export let gamePaused = false;
+const isSmallScreen = document.querySelector(".isSmallScreen")
+let gamePausedByChecker = false;
+const resumeBtn = document.getElementById("resume");
+const restartBtn = document.getElementById("restart");
+const pauseScreen = document.getElementById("pauseScreen");
 export const gameKeys = {
   ArrowLeft: false,
   ArrowRight: false,
   Space: false,
 };
-const resumeBtn = document.getElementById("resume");
-const restartBtn = document.getElementById("restart");
-const pauseScreen = document.getElementById("pauseScreen");
 
 window.addEventListener('resize', () => {
   boxBCR = document.querySelector(".box").getBoundingClientRect();
   checkScreen();
 });
-const isSmallScreen = document.querySelector(".isSmallScreen")
-let gamePausedByChecker = false;
+
+
+
+
+
+
+
+
+
 
 function checkScreen(){
   if (tooSmallScreen() && gameRunning && !gamePaused && !gameOver) {
@@ -44,15 +53,21 @@ function tooSmallScreen() {
 }
 
 
+
+
 resumeBtn.addEventListener("click", () => {
   pauseScreen.close();
   gamePaused = false;
   startGame();
 });
 
+
+
+
 restartBtn.addEventListener("click", () => {
   pauseScreen.close();
   gamePaused = false;
+  
   resetGame();
   resetEnemies();
 
@@ -65,6 +80,8 @@ const shotCooldown = 1000; // 1 second (1000 milliseconds)
 window.addEventListener("load", () => {
   createShip();
   createEnemies(32);
+  startEnemyShooting();
+
   const startGameBtn = document.getElementById("startGame");
 
   setInterval(() => {
@@ -117,6 +134,12 @@ document.addEventListener("keyup", (e) => {
 
 // Main game loop
 function startGame() {
+  console.log(nbrlives);
+  if ( (nbrlives== 0) && !gameOver){
+    pauseScreen.show();
+    gamePaused = true;
+  }
+  
   if (!gamePaused && !gameOver) {
     moveShip();
     moveEnemies();
@@ -139,5 +162,9 @@ function resetGame(){
   createEnemies(32);
   lastShotTime = 0;
 }
+
+
+  
+
 
 startGame();
