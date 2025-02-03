@@ -132,4 +132,12 @@ function startEnemyShooting() {
     }, 1000);
 }
 
-// startEnemyShooting();
+// Function to reset enemies
+export function resetEnemies() {
+    enemyX = 40;  // Start from the left
+    enemyY = 40;  // Start from the top
+    enemyDirection = 1;  // Move from left to right
+    enemyDiv.style.transform = `translate(${enemyX}px, ${enemyY}px)`;
+}
+
+startEnemyShooting();

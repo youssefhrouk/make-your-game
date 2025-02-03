@@ -1,5 +1,5 @@
 import { createShip, moveShip, createFire } from "./ship.js";
-import {  moveEnemies,createEnemies } from "./enemy.js";
+import {  moveEnemies,createEnemies ,resetEnemies } from "./enemy.js";
 
 export const gameDiv = document.querySelector(".game");
 export let boxBCR = document.querySelector(".box").getBoundingClientRect();
@@ -53,6 +53,9 @@ resumeBtn.addEventListener("click", () => {
 restartBtn.addEventListener("click", () => {
   pauseScreen.close();
   gamePaused = false;
+  resetGame();
+  resetEnemies();
+
   startGame();
 });
 
@@ -125,6 +128,16 @@ export function gameLost() {
   gameRunning = false;
   gameOver = true;
   gameOverScreen.show(); // Show game over screen
+}
+
+function resetGame(){
+  gameRunning = true;
+  gameOver = false;
+  gamePaused = false;
+  document.querySelectorAll(".fire,.enemy").forEach(el => el.remove());
+  createShip();
+  createEnemies(32);
+  lastShotTime = 0;
 }
 
 startGame();
