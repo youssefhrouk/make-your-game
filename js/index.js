@@ -10,6 +10,7 @@ export let gameOver = false;
 export let gamePaused = false;
 const isSmallScreen = document.querySelector(".isSmallScreen")
 let gamePausedByChecker = false;
+const tryAgainBtn = document.getElementById("tryAgain")
 const resumeBtn = document.getElementById("resume");
 const restartBtn = document.getElementById("restart");
 const pauseScreen = document.getElementById("pauseScreen");
@@ -73,6 +74,15 @@ restartBtn.addEventListener("click", () => {
 
   startGame();
 });
+
+tryAgainBtn.addEventListener('click', ()=>{
+  gameOverScreen.close();
+  gameRunning = true;
+  gameOver = false;
+  
+  resetGame();
+
+})
 
 let lastShotTime = 0; // Track last shot time
 const shotCooldown = 1000; // 1 second (1000 milliseconds)
@@ -158,6 +168,7 @@ function resetGame(){
   document.querySelectorAll(".fire,.enemy").forEach(el => el.remove());
   createShip();
   createEnemies(32);
+  addLives();
   lastShotTime = 0;
 }
 
