@@ -89,7 +89,6 @@ window.addEventListener("load", () => {
   }, 700);
 });
 
-// Event listener for keydown actions
 document.addEventListener("keydown", (e) => {
   if (e.code === "ArrowLeft") gameKeys["ArrowLeft"] = true;
   if (e.code === "ArrowRight") gameKeys["ArrowRight"] = true;
@@ -110,7 +109,6 @@ document.addEventListener("keydown", (e) => {
     }
   }
 
-  // Pause and unpause game on Escape key
   if (e.code === "Escape") {
     if (gameRunning && !gamePaused) {
       pauseScreen.show();
@@ -128,7 +126,7 @@ document.addEventListener("keyup", (e) => {
   if (e.code === "ArrowLeft") gameKeys["ArrowLeft"] = false;
   if (e.code === "ArrowRight") gameKeys["ArrowRight"] = false;
   if (e.code === "Space" || e.key === " ") {
-    gameKeys["Space"] = false; // Reset space key on release
+    gameKeys["Space"] = false;
   }
 });
 
@@ -143,7 +141,7 @@ function startGame() {
   if (!gamePaused && !gameOver) {
     moveShip();
     moveEnemies();
-    requestAnimationFrame(startGame); // Loop the game
+    requestAnimationFrame(startGame); 
   }
 }
 

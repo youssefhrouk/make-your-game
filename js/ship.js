@@ -70,10 +70,29 @@ function animateFire(fire) {
     }, 20);
 }
 }
-function addlives(){
+let nbrLives = 3;
+function addLives(){
     const lives = document.querySelector(".lives");
+    lives.innerHTML = "";
     for (let i=0;i<3;i++){
         const divLive = document.createElement("img");
-        divLive.src = ""
+        divLive.src = "../images/life.png";
+        divLive.style.top= '10px';
+        divLive.style.left ="20px"
+        divLive.style.position = "absolute";
+        divLive.style.width = '30px'
+        divLive.alt= "life";
+        divLive.classList.add="lives";
+        lives.appendChild(divLive);
     }
 }
+function loseLife() {
+    if (nbrLives > 0) {
+        nbrLives--; // Decrease the number of lives
+        addLives(); // Update the DOM to reflect the change
+    } else {
+        console.log("Game Over! No lives left.");
+    }
+}
+addLives();
+loseLife();
