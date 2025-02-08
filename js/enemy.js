@@ -97,22 +97,31 @@ function enemyShoot() {
     // Move the bullet downward
     moveEnemyBullet(bullet);
 }
+
 function moveEnemyBullet(bullet) {
     const bulletSpeed = 5;
-    
-    const moveInterval = setInterval(() => {
-        const bulletBCR = bullet.getBoundingClientRect();
 
+    // Recursive function to move the bullet using requestAnimationFrame
+    function move() {
+        const bulletBCR = bullet.getBoundingClientRect();
+        
         // Move bullet down
         bullet.style.top = `${bulletBCR.top + bulletSpeed}px`;
-        
+
         // Check for collision with player or out of bounds
-        if (bulletBCR.bottom >= boxBCR.bottom || isBulletHitPlayer(bulletBCR)) {
-            clearInterval(moveInterval);
+        if (bulletBCR.bottom < boxBCR.bottom && !isBulletHitPlayer(bulletBCR)) {
+            // Continue moving the bullet
+            requestAnimationFrame(move);
+        } else {
+            // Bullet hit the player or went out of bounds
             bullet.remove();
         }
-    }, 20);
+    }
+
+    // Start the animation
+    requestAnimationFrame(move);
 }
+
 
 export let nbrlives = 3;
 
@@ -145,3 +154,19 @@ export function resetEnemies() {
     enemyDiv.style.transform = `translate(${enemyX}px, ${enemyY}px)`;
 }
 
+export function enemyDestroyed(bBCR) {
+    const enemies = document.querySelectorAll('.enemy');
+    let hit = false;
+    enemies.forEach((enemy) => {
+        const eBCR = enemy.getBoundingClientRect();
+        if (eBCR.top <= bBCR.top && eBCR.bottom >= bBCR.top && eBCR.left <= bBCR.left && eBCR.right >= bBCR.right) {
+                enemy.remove();
+                hit = true;
+                addScore(false, enemy.id);
+                if (enemies.length <= 1) {
+                    addNewEnemies();
+                }
+        }
+    })
+    return hit;
+}

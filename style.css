@@ -89,7 +89,7 @@ body {
     height: 10px;
   } */
   
-.fire {
+.bullet {
     position: absolute;
     width: 3px;
     height: 15px;

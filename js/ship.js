@@ -1,10 +1,13 @@
 import { boxBCR, gameDiv, gameOver,gamePaused } from "./index.js";
 import { gameRunning,gameKeys } from "./index.js";
+import { enemyDestroyed } from "./enemy.js";
 
 const ship = document.createElement("img");
 
 export let shipX, shipY;
 export let bulletExists = false;
+let bulletCount = 0;
+
 
 export function createShip() {
     shipX = boxBCR.width / 2 - 25;
@@ -24,75 +27,75 @@ export function moveShip() {
 
     ship.style.transform = `translate(${shipX}px,${shipY}px)`;
 }
-const fire = document.createElement('div');
-fire.setAttribute('class', 'fire');
-export function createFire() {
+
+const bullet = document.createElement('div');
+
+bullet.setAttribute('class', 'bullet');
+
+let bulletX, bulletY;
+
+export function fireBullet() {
     bulletExists = true;
-    fire.style.left = `${shipX + 20}px`;
-    fire.style.top = `${shipY}px`;
-    gameDiv.appendChild(fire);
-    animateFire(fire);
+    bulletX = shipX + 24;
+    bulletY = shipY; 
+    
+    bullet.style.transform = `translate(${bulletX}px, ${bulletY}px)`
+    gameDiv.appendChild(bullet);  
+
+    bulletCount++;
+    // if (bulletCount === 13) {
+    //     createMothership();
+    //     bulletCount = 0;
+    // }
+    
+    
+    moveBullet();
 }
 
-function animateFire(fire) {
-    if (gameOver){
-        fire.remove();
+export function moveBullet() {
+    if (gameOver) {
+        bullet.remove();
         bulletExists = false;
-        return
-    } 
+        return;
+    }
     if (gameRunning && !gamePaused) {
-
-    const fireInterval = setInterval(() => {
-        const currentTop = parseInt(fire.style.top, 10);
-        fire.style.top = `${currentTop - 5}px`;
-
-        // Check for collisions with enemies
-        const enemies = document.querySelectorAll('.enemy');
-        enemies.forEach((enemy) => {
-            const enemyBCR = enemy.getBoundingClientRect();
-            const fireBCR = fire.getBoundingClientRect();
-            if (
-                fireBCR.left < enemyBCR.right &&
-                fireBCR.right > enemyBCR.left &&
-                fireBCR.top < enemyBCR.bottom &&
-                fireBCR.bottom > enemyBCR.top
-            ) {
-                enemy.remove();
-                fire.remove();
-                clearInterval(fireInterval);
-            }
-        });
-
-        if (currentTop < 0) {
-            clearInterval(fireInterval);
-            fire.remove();
-        }
-    }, 20);
-}
-}
-let nbrLives = 3;
-function addLives(){
-    const lives = document.querySelector(".lives");
-    lives.innerHTML = "";
-    for (let i=0;i<3;i++){
-        const divLive = document.createElement("img");
-        divLive.src = "../images/life.png";
-        divLive.style.top= '10px';
-        divLive.style.left ="20px"
-        divLive.style.position = "absolute";
-        divLive.style.width = '30px'
-        divLive.alt= "life";
-        divLive.classList.add="lives";
-        lives.appendChild(divLive);
+        const bulletBCR = bullet.getBoundingClientRect();
+    if (bulletBCR.top < boxBCR.top || enemyDestroyed(bulletBCR) /*|| mothershipDestroyed(bulletBCR)*/) {
+        bullet.remove();
+        bulletExists = false;
+        return;
     }
-}
-function loseLife() {
-    if (nbrLives > 0) {
-        nbrLives--; // Decrease the number of lives
-        addLives(); // Update the DOM to reflect the change
-    } else {
-        console.log("Game Over! No lives left.");
+    bulletY -= 10;
+    bullet.style.transform = `translate(${bulletX}px, ${bulletY}px)`
+    requestAnimationFrame(moveBullet)
     }
+    
 }
-addLives();
-loseLife();
+
+
+// let nbrLives = 3;
+// function addLives(){
+//     const lives = document.querySelector(".lives");
+//     lives.innerHTML = "";
+//     for (let i=0;i<3;i++){
+//         const divLive = document.createElement("img");
+//         divLive.src = "../images/life.png";
+//         divLive.style.top= '10px';
+//         divLive.style.left ="20px"
+//         divLive.style.position = "absolute";
+//         divLive.style.width = '30px'
+//         divLive.alt= "life";
+//         divLive.classList.add="lives";
+//         lives.appendChild(divLive);
+//     }
+// }
+// function loseLife() {
+//     if (nbrLives > 0) {
+//         nbrLives--; // Decrease the number of lives
+//         addLives(); // Update the DOM to reflect the change
+//     } else {
+//         console.log("Game Over! No lives left.");
+//     }
+// }
+// addLives();
+// loseLife();

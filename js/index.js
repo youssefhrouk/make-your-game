@@ -1,5 +1,5 @@
-import { createShip, moveShip, createFire } from "./ship.js";
-import {  moveEnemies,createEnemies ,resetEnemies, windowFocused, startEnemyShooting,nbrlives } from "./enemy.js";
+import { createShip, moveShip, fireBullet, moveBullet } from "./ship.js";
+import {  moveEnemies,createEnemies ,resetEnemies, windowFocused, startEnemyShooting,nbrlives, bulletExists } from "./enemy.js";
 
 export const gameDiv = document.querySelector(".game");
 export let boxBCR = document.querySelector(".box").getBoundingClientRect();
@@ -60,6 +60,7 @@ resumeBtn.addEventListener("click", () => {
   pauseScreen.close();
   gamePaused = false;
   startGame();
+  moveBullet();
 });
 
 
@@ -70,9 +71,9 @@ restartBtn.addEventListener("click", () => {
   gamePaused = false;
   
   resetGame();
-  resetEnemies();
-
   startGame();
+
+  moveBullet();
 });
 
 tryAgainBtn.addEventListener('click', ()=>{
@@ -81,6 +82,8 @@ tryAgainBtn.addEventListener('click', ()=>{
   gameOver = false;
   
   resetGame();
+  startGame();
+  moveBullet();
 
 })
 
@@ -103,22 +106,25 @@ document.addEventListener("keydown", (e) => {
   if (e.code === "ArrowLeft") gameKeys["ArrowLeft"] = true;
   if (e.code === "ArrowRight") gameKeys["ArrowRight"] = true;
 
-  const currentTime = Date.now();
 
   if ((e.code === "Space" || e.key === " ") && !gameKeys["Space"]) {
-    if (gameRunning && currentTime - lastShotTime >= shotCooldown) {
+    if (gameRunning && !gamePaused && !bulletExists) {
       gameKeys["Space"] = true;
-      lastShotTime = currentTime; 
-      createFire();
+      checkScreen();
     }
 
-    if (!gameRunning) {
+    if (!gameRunning && !gamePaused && !gameOver) {
       titleDiv.remove();
       gameDiv.removeAttribute("hidden");
       gameRunning = true;
     }
   }
-
+  if (e.code === 'Enter') {
+    if (gameOver) {
+        gameRunning = true;
+        gameOver = false;
+    }
+}
   if (e.code === "Escape") {
     if (gameRunning && !gamePaused) {
       pauseScreen.show();
@@ -127,6 +133,7 @@ document.addEventListener("keydown", (e) => {
       pauseScreen.close();
       gamePaused = false;
       startGame();
+      moveBullet();
     }
   }
 });
@@ -141,16 +148,20 @@ document.addEventListener("keyup", (e) => {
 });
 
 // Main game loop
-function startGame() {
+function startGame(time) {
   console.log(nbrlives);
-  if ( (nbrlives== 0) && !gameOver){
-    pauseScreen.show();
-    gamePaused = true;
-  }
+  // if ( (nbrlives== 0) && !gameOver){
+  //   pauseScreen.show();
+  //   gamePaused = true;
+  // }
   
   if (!gamePaused && !gameOver) {
     moveShip();
     moveEnemies();
+    if (gameKeys["Space"] && time - lastShotTime > 1000){
+      fireBullet()
+      lastShotTime = time
+    }
     requestAnimationFrame(startGame); 
   }
 }
@@ -168,7 +179,7 @@ function resetGame(){
   document.querySelectorAll(".fire,.enemy").forEach(el => el.remove());
   createShip();
   createEnemies(32);
-  addLives();
+  // addLives();
   lastShotTime = 0;
 }
 
