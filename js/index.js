@@ -179,11 +179,12 @@ function resetGame() {
   s !== null ? s.remove() : null;
   document.querySelector('.enemies').innerHTML = '';
   document.querySelector('.lives').innerHTML = '';
+  console.log("heheheh ax hadxi ");
   
   gameRunning = true;
   gameOver = false;
   gamePaused = false;
-  document.querySelectorAll(".fire,.enemy").forEach(el => el.remove());
+  document.querySelectorAll(".bullet,.enemy").forEach(el => el.remove());
   createShip();
   createEnemies(32);
   addLives();

@@ -7,7 +7,7 @@ const ship = document.createElement("img");
 export let shipX, shipY;
 export let bulletExists = false;
 let bulletCount = 0;
-let lives = 3;
+let lives;
 
 
 export function createShip() {
@@ -77,6 +77,7 @@ export function addLives() {
     const liveSpan = document.querySelector(".lives");
     liveSpan.innerHTML = "";
     let left = 0;
+    lives = 3
     for (let i = 0; i < lives; i++) {
         const divLive = document.createElement("img");
         divLive.src = "../images/life.png";
@@ -91,6 +92,7 @@ export function addLives() {
             liveSpan.appendChild(divLive);
         }
     }
+
 }
 export function isBulletHitPlayer(bulletBCR) {
     const playerBCR = document.querySelector(".ship").getBoundingClientRect();
