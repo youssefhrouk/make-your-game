@@ -150,17 +150,12 @@ document.addEventListener("keyup", (e) => {
 
 // Main game loop
 function startGame(time) {
-  // console.log(nbrlives);
-  // if ( (nbrlives== 0) && !gameOver){
-  //   pauseScreen.show();
-  //   gamePaused = true;
-  // }
-  // addLives();
+  time = Date.now();
 
   if (!gamePaused && !gameOver) {
     moveShip();
     moveEnemies();
-    if (gameKeys["Space"] && time - lastShotTime > 1000) {
+    if (gameKeys["Space"] && time - lastShotTime > 500) {
       fireBullet()
       lastShotTime = time
     }
