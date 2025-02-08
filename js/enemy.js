@@ -1,6 +1,6 @@
 import { boxBCR,gameDiv, gameOver,gameLost } from "./index.js";
 import { gameRunning } from "./index.js";
-import { createShip} from "./ship.js";
+import { createShip,lives} from "./ship.js";
 const enemyDiv = document.querySelector(".enemies");
 
 let enemyDirection = 1, enemyX =30 , enemyY = 50;
@@ -123,16 +123,15 @@ function moveEnemyBullet(bullet) {
 }
 
 
-export let nbrlives = 3;
 
 function isBulletHitPlayer(bulletBCR) {
     const playerBCR = document.querySelector(".ship").getBoundingClientRect();
     if (bulletBCR.right > playerBCR.left && bulletBCR.left < playerBCR.right &&
         bulletBCR.bottom > playerBCR.top && bulletBCR.top < playerBCR.bottom) {
             
-            nbrlives -= 1;
+            lives >= 0 ? document.getElementById(`life-${lives}`).remove() : gameLost();
+            lives--;
 
-            createShip();
             return true;
         }
     return false;
@@ -162,10 +161,10 @@ export function enemyDestroyed(bBCR) {
         if (eBCR.top <= bBCR.top && eBCR.bottom >= bBCR.top && eBCR.left <= bBCR.left && eBCR.right >= bBCR.right) {
                 enemy.remove();
                 hit = true;
-                addScore(false, enemy.id);
-                if (enemies.length <= 1) {
-                    addNewEnemies();
-                }
+                // addScore(false, enemy.id);
+                // if (enemies.length <= 1) {
+                //     addNewEnemies();
+                // }
         }
     })
     return hit;

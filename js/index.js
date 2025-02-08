@@ -1,5 +1,5 @@
-import { createShip, moveShip, fireBullet, moveBullet } from "./ship.js";
-import {  moveEnemies,createEnemies ,resetEnemies, windowFocused, startEnemyShooting,nbrlives, bulletExists } from "./enemy.js";
+import { createShip, moveShip, fireBullet, moveBullet, bulletExists, addLives } from "./ship.js";
+import { moveEnemies, createEnemies, resetEnemies, windowFocused, startEnemyShooting } from "./enemy.js";
 
 export const gameDiv = document.querySelector(".game");
 export let boxBCR = document.querySelector(".box").getBoundingClientRect();
@@ -34,19 +34,19 @@ window.addEventListener('resize', () => {
 
 
 
-function checkScreen(){
+function checkScreen() {
   if (tooSmallScreen() && gameRunning && !gamePaused && !gameOver) {
-      gamePausedByChecker = true;
-      gamePaused = true;
-      isSmallScreen.show();
-    } else if (!tooSmallScreen() && gameRunning && gamePaused && gamePausedByChecker) {
-      gamePaused = false;
-      isSmallScreen.close();
-      runGame();
-      moveBullet();
-      gamePausedByChecker = false;
-    }
-    return;
+    gamePausedByChecker = true;
+    gamePaused = true;
+    isSmallScreen.show();
+  } else if (!tooSmallScreen() && gameRunning && gamePaused && gamePausedByChecker) {
+    gamePaused = false;
+    isSmallScreen.close();
+    startGame();
+    moveBullet();
+    gamePausedByChecker = false;
+  }
+  return;
 }
 
 function tooSmallScreen() {
@@ -69,18 +69,18 @@ resumeBtn.addEventListener("click", () => {
 restartBtn.addEventListener("click", () => {
   pauseScreen.close();
   gamePaused = false;
-  
+
   resetGame();
   startGame();
 
   moveBullet();
 });
 
-tryAgainBtn.addEventListener('click', ()=>{
+tryAgainBtn.addEventListener('click', () => {
   gameOverScreen.close();
   gameRunning = true;
   gameOver = false;
-  
+
   resetGame();
   startGame();
   moveBullet();
@@ -93,6 +93,7 @@ const shotCooldown = 1000; // 1 second (1000 milliseconds)
 window.addEventListener("load", () => {
   createShip();
   createEnemies(32);
+  addLives();
   startEnemyShooting();
 
   const startGameBtn = document.getElementById("startGame");
@@ -121,10 +122,10 @@ document.addEventListener("keydown", (e) => {
   }
   if (e.code === 'Enter') {
     if (gameOver) {
-        gameRunning = true;
-        gameOver = false;
+      gameRunning = true;
+      gameOver = false;
     }
-}
+  }
   if (e.code === "Escape") {
     if (gameRunning && !gamePaused) {
       pauseScreen.show();
@@ -149,42 +150,47 @@ document.addEventListener("keyup", (e) => {
 
 // Main game loop
 function startGame(time) {
-  console.log(nbrlives);
+  // console.log(nbrlives);
   // if ( (nbrlives== 0) && !gameOver){
   //   pauseScreen.show();
   //   gamePaused = true;
   // }
-  
+  // addLives();
+
   if (!gamePaused && !gameOver) {
     moveShip();
     moveEnemies();
-    if (gameKeys["Space"] && time - lastShotTime > 1000){
+    if (gameKeys["Space"] && time - lastShotTime > 1000) {
       fireBullet()
       lastShotTime = time
     }
-    requestAnimationFrame(startGame); 
+    requestAnimationFrame(startGame);
   }
 }
 
 export function gameLost() {
   gameRunning = false;
   gameOver = true;
-  gameOverScreen.show(); // Show game over screen
+  gameOverScreen.show();
 }
 
-function resetGame(){
+function resetGame() {
+  let s = document.querySelector('.ship')
+  s !== null ? s.remove() : null;
+  document.querySelector('.enemies').innerHTML = '';
+  document.querySelector('.lives').innerHTML = '';
   gameRunning = true;
   gameOver = false;
   gamePaused = false;
   document.querySelectorAll(".fire,.enemy").forEach(el => el.remove());
   createShip();
   createEnemies(32);
-  // addLives();
+  addLives();
   lastShotTime = 0;
 }
 
 
-  
+
 
 
 startGame();
