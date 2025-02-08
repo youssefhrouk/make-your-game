@@ -1,5 +1,5 @@
 import { boxBCR, gameDiv, gameOver, gamePaused } from "./index.js";
-import { gameRunning, gameKeys } from "./index.js";
+import { gameRunning, gameKeys,gameLost } from "./index.js";
 import { enemyDestroyed } from "./enemy.js";
 
 const ship = document.createElement("img");
@@ -7,7 +7,7 @@ const ship = document.createElement("img");
 export let shipX, shipY;
 export let bulletExists = false;
 let bulletCount = 0;
-export let lives;
+let lives = 3;
 
 
 export function createShip() {
@@ -75,7 +75,6 @@ export function moveBullet() {
 
 export function addLives() {
     const liveSpan = document.querySelector(".lives");
-    lives = 3;
     liveSpan.innerHTML = "";
     let left = 0;
     for (let i = 0; i < lives; i++) {
@@ -84,11 +83,27 @@ export function addLives() {
         divLive.style.position = "absolute";
         divLive.style.transform = `translate(${left}px, 0)`
         divLive.style.width = '30px'
-        divLive.classList.add = "lives";
+        divLive.setAttribute("id",`life-${i}`);
         left += 30
         console.log(left)
-        liveSpan.appendChild(divLive);
+        divLive.onload =() =>{
+
+            liveSpan.appendChild(divLive);
+        }
     }
+}
+export function isBulletHitPlayer(bulletBCR) {
+    const playerBCR = document.querySelector(".ship").getBoundingClientRect();
+    if (bulletBCR.right > playerBCR.left && bulletBCR.left < playerBCR.right &&
+        bulletBCR.bottom > playerBCR.top && bulletBCR.top < playerBCR.bottom) {
+            console.log("fffffffff",lives);
+            
+            lives--;
+            lives >= 0 ? document.getElementById(`life-${lives}`).remove() : gameLost();
+
+            return true;
+        }
+    return false;
 }
 
 // function loseLife() {

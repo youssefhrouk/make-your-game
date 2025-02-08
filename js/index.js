@@ -179,6 +179,7 @@ function resetGame() {
   s !== null ? s.remove() : null;
   document.querySelector('.enemies').innerHTML = '';
   document.querySelector('.lives').innerHTML = '';
+  
   gameRunning = true;
   gameOver = false;
   gamePaused = false;
