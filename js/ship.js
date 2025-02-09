@@ -1,4 +1,4 @@
-import { boxBCR, gameDiv, gameOver, gamePaused } from "./index.js";
+import { boxBCR, gameDiv, gameOver, gamePaused, keys } from "./index.js";
 import { gameRunning, gameKeys,gameLost } from "./index.js";
 import { enemyDestroyed } from "./enemy.js";
 
@@ -22,8 +22,10 @@ export function createShip() {
 
 export function moveShip() {
     if (gameRunning) {
-        if (gameKeys.ArrowLeft && shipX >= 2) shipX -= 5;
-        if (gameKeys.ArrowRight && shipX < boxBCR.width - 52) shipX += 5;
+        if (keys[0]) {
+            if (keys[0] == 'r' && shipX < boxBCR.width - 52) shipX += 5;
+            else if (shipX >= 2) shipX -= 5;
+        }
     }
 
     ship.style.transform = `translate(${shipX}px,${shipY}px)`;

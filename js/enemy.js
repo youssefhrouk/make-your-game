@@ -1,4 +1,4 @@
-import { boxBCR, gameLost } from "./index.js";
+import { boxBCR, gameLost ,gamePaused, gameOver} from "./index.js";
 import { gameRunning } from "./index.js";
 import {isBulletHitPlayer} from "./ship.js"
 
@@ -23,10 +23,10 @@ export function createEnemies(enemyCount) {
  
 
     const enemiesPerRow = 8; 
-    const enemyWidth = 35; 
+    const enemyWidth = 40; 
     const enemyHeight = 35; 
-    const gapX = 15;  
-    const gapY = 15; 
+    const gapX = 10;  
+    const gapY = 10; 
     enemyX = boxBCR.width / 2 - 200;
     enemyY = 100;
 
@@ -88,6 +88,8 @@ function createEnemyBullet(enemyFireX,enemyFireY){
 }
 
 function enemyShoot() {
+    if (!windowFocused || gamePaused || !gameRunning || gameOver) return;
+
     const enemies = document.querySelectorAll('.enemy');
     const randomEnemy = enemies[Math.floor(Math.random() * enemies.length)];
     const enemyBCR = randomEnemy.getBoundingClientRect();
@@ -102,19 +104,15 @@ function enemyShoot() {
 function moveEnemyBullet(bullet) {
     const bulletSpeed = 5;
 
-    // Recursive function to move the bullet using requestAnimationFrame
     function move() {
         const bulletBCR = bullet.getBoundingClientRect();
         
         // Move bullet down
         bullet.style.top = `${bulletBCR.top + bulletSpeed}px`;
 
-        // Check for collision with player or out of bounds
         if (bulletBCR.bottom < boxBCR.bottom && !isBulletHitPlayer(bulletBCR)) {
-            // Continue moving the bullet
             requestAnimationFrame(move);
         } else {
-            // Bullet hit the player or went out of bounds
             bullet.remove();
         }
     }
@@ -135,7 +133,6 @@ export function startEnemyShooting() {
     }, 1000);
 }
 
-// Function to reset enemies
 export function resetEnemies() {
     enemyX = 40;  // Start from the left
     enemyY = 40;  // Start from the top
@@ -152,10 +149,18 @@ export function enemyDestroyed(bBCR) {
                 enemy.remove();
                 hit = true;
                 // addScore(false, enemy.id);
-                // if (enemies.length <= 1) {
-                //     addNewEnemies();
-                // }
+                if (enemies.length <= 1) {
+                    addNewEnemies();
+                }
         }
     })
     return hit;
+}
+
+function addNewEnemies() {
+    if (enemyBulletFrequency > 1000) enemyBulletFrequency -= 100;
+    enemyBulletSpeed += 0.1;
+    scoreMultiplier *= 2;
+    
+    createEnemies(32);
 }

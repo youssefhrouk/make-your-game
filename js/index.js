@@ -2,7 +2,7 @@ import { createShip, moveShip, fireBullet, moveBullet, bulletExists, addLives } 
 import { moveEnemies, createEnemies, resetEnemies, windowFocused, startEnemyShooting } from "./enemy.js";
 
 export const gameDiv = document.querySelector(".game");
-export let boxBCR = document.querySelector(".box").getBoundingClientRect();
+  export let boxBCR = document.querySelector(".box").getBoundingClientRect();
 const titleDiv = document.querySelector(".title");
 const gameOverScreen = document.getElementById("gameOverScreen");
 export let gameRunning = false;
@@ -19,6 +19,8 @@ export const gameKeys = {
   ArrowRight: false,
   Space: false,
 };
+
+export const keys = []
 
 window.addEventListener('resize', () => {
   boxBCR = document.querySelector(".box").getBoundingClientRect();
@@ -87,8 +89,8 @@ tryAgainBtn.addEventListener('click', () => {
 
 })
 
-let lastShotTime = 0; // Track last shot time
-const shotCooldown = 1000; // 1 second (1000 milliseconds)
+let lastShotTime = 0; 
+const shotCooldown = 1000; 
 
 window.addEventListener("load", () => {
   createShip();
@@ -104,8 +106,15 @@ window.addEventListener("load", () => {
 });
 
 document.addEventListener("keydown", (e) => {
-  if (e.code === "ArrowLeft") gameKeys["ArrowLeft"] = true;
-  if (e.code === "ArrowRight") gameKeys["ArrowRight"] = true;
+  if (e.code === "ArrowLeft") {
+    if (!keys.includes('l')) keys.unshift("l")
+  }
+  if (e.code === "ArrowRight") {
+    if (!keys.includes('r')) keys.unshift("r")
+  }
+
+  
+    
 
 
   if ((e.code === "Space" || e.key === " ") && !gameKeys["Space"]) {
@@ -139,16 +148,16 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-// Event listener for keyup actions
 document.addEventListener("keyup", (e) => {
-  if (e.code === "ArrowLeft") gameKeys["ArrowLeft"] = false;
-  if (e.code === "ArrowRight") gameKeys["ArrowRight"] = false;
+  if (e.code === "ArrowLeft") keys.splice(keys.indexOf("l"), 1)
+  if (e.code === "ArrowRight") keys.splice(keys.indexOf("r"), 1)
   if (e.code === "Space" || e.key === " ") {
     gameKeys["Space"] = false;
   }
+  console.log(keys);
+  
 });
 
-// Main game loop
 function startGame(time) {
   time = Date.now();
 
