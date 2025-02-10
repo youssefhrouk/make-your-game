@@ -55,6 +55,7 @@ export function fireBullet() {
     moveBullet();
 }
 
+
 export function moveBullet() {
     if (gameOver) {
         bullet.remove();
@@ -65,7 +66,6 @@ export function moveBullet() {
         const bulletBCR = bullet.getBoundingClientRect();
         if (bulletBCR.top < boxBCR.top || enemyDestroyed(bulletBCR) /*|| mothershipDestroyed(bulletBCR)*/) {
             bullet.remove();
-            console.log('foihjfiu');
 
             bulletExists = false;
             return;
@@ -113,7 +113,6 @@ export function isBulletHitPlayer(bulletBCR) {
 }
 
 export function addScore(id) {
-    score = 0
     // if (isMothership === true) {
     //   score += 300;
     //   scoreDiv.innerHTML = `Score: ${score}`;

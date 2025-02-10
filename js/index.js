@@ -159,7 +159,7 @@ function startGame(time) {
   if (!gamePaused && !gameOver) {
     moveShip();
     moveEnemies();
-    if (gameKeys["Space"] && time - lastShotTime > 100) {
+    if (gameKeys["Space"] && time - lastShotTime > 800) {
       fireBullet()
       lastShotTime = time
     }
@@ -179,7 +179,7 @@ console.log('wash had zmar khdam olla la????????????');
   gameRunning = true;
   gameOver = false;
   gamePaused = false;
-  addScore();
+  // addScore();
   createShip();
   createEnemies(32);
   addLives();

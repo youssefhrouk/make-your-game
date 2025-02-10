@@ -104,12 +104,11 @@ function enemyShoot() {
 }
 
 function moveEnemyBullet(bullet) {
-    const bulletSpeed = 5;
 
     function move() {
         const bulletBCR = bullet.getBoundingClientRect();
         
-        bullet.style.top = `${bulletBCR.top + bulletSpeed}px`;
+        bullet.style.top = `${bulletBCR.top + 5}px`;
 
         if (bulletBCR.bottom < boxBCR.bottom && !isBulletHitPlayer(bulletBCR)) {
             requestAnimationFrame(move);
@@ -125,13 +124,18 @@ function moveEnemyBullet(bullet) {
 
 
 export function startEnemyShooting() {
-    const shootInterval = setInterval(() => {
+    const shoot = setInterval(()=>{
         if (gameRunning) {
             
             enemyShoot(); 
         }
-    }, 500);
+    },1000);    
+
+        
 }
+
+
+
 
 export function enemyDestroyed(bBCR) {
     const enemies = document.querySelectorAll('.enemy');
