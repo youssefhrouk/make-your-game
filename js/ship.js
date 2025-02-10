@@ -1,12 +1,14 @@
 import { boxBCR, gameDiv, gameOver, gamePaused, keys } from "./index.js";
 import { gameRunning, gameKeys,gameLost } from "./index.js";
-import { enemyDestroyed } from "./enemy.js";
+import { enemyDestroyed,scoreMultiplier } from "./enemy.js";
+
+export const scoreDiv = document.querySelector(".score")
 
 const ship = document.createElement("img");
 
 export let shipX, shipY;
 export let bulletExists = false;
-let bulletCount = 0;
+let bulletCount = 0,score = 0;
 let lives;
 
 
@@ -110,13 +112,20 @@ export function isBulletHitPlayer(bulletBCR) {
     return false;
 }
 
-// function loseLife() {
-//     if (nbrLives > 0) {
-//         nbrLives--; // Decrease the number of lives
-//         addLives(); // Update the DOM to reflect the change
-//     } else {
-//         console.log("Game Over! No lives left.");
-//     }
-// }
-// addLives();
-// loseLife();
+export function addScore(id) {
+    score = 0
+    // if (isMothership === true) {
+    //   score += 300;
+    //   scoreDiv.innerHTML = `Score: ${score}`;
+    // } else if (isMothership === false) {
+      if (id < 8) {
+        score += 30 * scoreMultiplier;
+      } else if (id < 16 && id >= 8) {
+        score += 20 * scoreMultiplier;
+      } else {
+        score += 10 * scoreMultiplier;
+      }
+      scoreDiv.textContent = `Score: ${score}`;
+      
+    // }
+  }

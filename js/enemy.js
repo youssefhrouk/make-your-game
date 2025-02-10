@@ -1,9 +1,9 @@
 import { boxBCR, gameLost ,gamePaused, gameOver} from "./index.js";
 import { gameRunning } from "./index.js";
-import {isBulletHitPlayer} from "./ship.js"
+import {isBulletHitPlayer,addScore} from "./ship.js"
 let enemyBulletFrequency = 3000;
 let enemyBulletSpeed = 2; 
-export let scoreMultiplier = 1
+export let scoreMultiplier = 1;
 
 const enemyDiv = document.querySelector(".enemies");
 
@@ -23,7 +23,6 @@ window.addEventListener('blur', () => {
 
 
 export function createEnemies(enemyCount) {
- 
 
     const enemiesPerRow = 8; 
     const enemyWidth = 50; 
@@ -110,7 +109,6 @@ function moveEnemyBullet(bullet) {
     function move() {
         const bulletBCR = bullet.getBoundingClientRect();
         
-        // Move bullet down
         bullet.style.top = `${bulletBCR.top + bulletSpeed}px`;
 
         if (bulletBCR.bottom < boxBCR.bottom && !isBulletHitPlayer(bulletBCR)) {
@@ -120,7 +118,6 @@ function moveEnemyBullet(bullet) {
         }
     }
 
-    // Start the animation
     requestAnimationFrame(move);
 }
 
@@ -133,14 +130,7 @@ export function startEnemyShooting() {
             
             enemyShoot(); 
         }
-    }, 1000);
-}
-
-export function resetEnemies() {
-    enemyX = 40;  // Start from the left
-    enemyY = 40;  // Start from the top
-    enemyDirection = 1;  // Move from left to right
-    enemyDiv.style.transform = `translate(${enemyX}px, ${enemyY}px)`;
+    }, 500);
 }
 
 export function enemyDestroyed(bBCR) {
@@ -151,7 +141,7 @@ export function enemyDestroyed(bBCR) {
         if (eBCR.top <= bBCR.top && eBCR.bottom >= bBCR.top && eBCR.left <= bBCR.left && eBCR.right >= bBCR.right) {
                 enemy.remove();
                 hit = true;
-                // addScore(false, enemy.id);
+                addScore(enemy.id);
                 if (enemies.length <= 1) {
                     addNewEnemies();
                 }
@@ -159,6 +149,7 @@ export function enemyDestroyed(bBCR) {
     })
     return hit;
 }
+
 function addNewEnemies() {
     console.log("khdama olla la ???");
     

@@ -1,5 +1,5 @@
-import { createShip, moveShip, fireBullet, moveBullet, bulletExists, addLives } from "./ship.js";
-import { moveEnemies, createEnemies, resetEnemies, windowFocused, startEnemyShooting } from "./enemy.js";
+import { createShip, moveShip, fireBullet, moveBullet, bulletExists, addLives,scoreDiv, addScore } from "./ship.js";
+import { moveEnemies, createEnemies, windowFocused, startEnemyShooting } from "./enemy.js";
 
 export const gameDiv = document.querySelector(".game");
   export let boxBCR = document.querySelector(".box").getBoundingClientRect();
@@ -90,7 +90,6 @@ tryAgainBtn.addEventListener('click', () => {
 })
 
 let lastShotTime = 0; 
-const shotCooldown = 1000; 
 
 window.addEventListener("load", () => {
   createShip();
@@ -112,9 +111,6 @@ document.addEventListener("keydown", (e) => {
   if (e.code === "ArrowRight") {
     if (!keys.includes('r')) keys.unshift("r")
   }
-
-  
-    
 
 
   if ((e.code === "Space" || e.key === " ") && !gameKeys["Space"]) {
@@ -154,7 +150,6 @@ document.addEventListener("keyup", (e) => {
   if (e.code === "Space" || e.key === " ") {
     gameKeys["Space"] = false;
   }
-  console.log(keys);
   
 });
 
@@ -179,16 +174,12 @@ export function gameLost() {
 }
 
 function resetGame() {
-  let s = document.querySelector('.ship')
-  s !== null ? s.remove() : null;
-  document.querySelector('.enemies').innerHTML = '';
-  document.querySelector('.lives').innerHTML = '';
-  console.log("heheheh ax hadxi ");
-  
+console.log('wash had zmar khdam olla la????????????');
+
   gameRunning = true;
   gameOver = false;
   gamePaused = false;
-  document.querySelectorAll(".bullet,.enemy").forEach(el => el.remove());
+  addScore();
   createShip();
   createEnemies(32);
   addLives();
