@@ -164,7 +164,7 @@ function startGame(time) {
   if (!gamePaused && !gameOver) {
     moveShip();
     moveEnemies();
-    if (gameKeys["Space"] && time - lastShotTime > 500) {
+    if (gameKeys["Space"] && time - lastShotTime > 100) {
       fireBullet()
       lastShotTime = time
     }

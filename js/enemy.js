@@ -1,6 +1,9 @@
 import { boxBCR, gameLost ,gamePaused, gameOver} from "./index.js";
 import { gameRunning } from "./index.js";
 import {isBulletHitPlayer} from "./ship.js"
+let enemyBulletFrequency = 3000;
+let enemyBulletSpeed = 2; 
+export let scoreMultiplier = 1
 
 const enemyDiv = document.querySelector(".enemies");
 
@@ -23,8 +26,8 @@ export function createEnemies(enemyCount) {
  
 
     const enemiesPerRow = 8; 
-    const enemyWidth = 40; 
-    const enemyHeight = 35; 
+    const enemyWidth = 50; 
+    const enemyHeight = 40; 
     const gapX = 10;  
     const gapY = 10; 
     enemyX = boxBCR.width / 2 - 200;
@@ -156,8 +159,9 @@ export function enemyDestroyed(bBCR) {
     })
     return hit;
 }
-
 function addNewEnemies() {
+    console.log("khdama olla la ???");
+    
     if (enemyBulletFrequency > 1000) enemyBulletFrequency -= 100;
     enemyBulletSpeed += 0.1;
     scoreMultiplier *= 2;
