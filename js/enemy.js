@@ -1,9 +1,9 @@
 import { boxBCR, gameLost ,gamePaused, gameOver} from "./index.js";
 import { gameRunning } from "./index.js";
 import {isBulletHitPlayer,addScore} from "./ship.js"
-let enemyBulletFrequency = 3000;
+let enemyBulletFrequency = 1000;
 let enemyBulletSpeed = 2; 
-export let scoreMultiplier = 10000;
+export let scoreMultiplier = 1;
 
 const enemyDiv = document.querySelector(".enemies");
 
@@ -11,7 +11,6 @@ let enemyDirection = 1, enemyX =30 , enemyY = 50;
 export let windowFocused = true;
 export let bulletExists = false;
 let bulletCount = 0;
-let shoot; 
 
 window.addEventListener('focus', () => {
     windowFocused = true;
@@ -23,7 +22,6 @@ window.addEventListener('blur', () => {
 
 
 export function createEnemies(enemyCount) {
-clearInterval(shoot);
     const enemiesPerRow = 8; 
     const enemyWidth = 50; 
     const enemyHeight = 40; 
@@ -124,18 +122,16 @@ function moveEnemyBullet(bullet) {
 
 
 
+let lastEnemyShotTime = 0;  // Track the last time an enemy shot
+const enemyShotInterval = enemyBulletFrequency; // Time between each enemy shot
 
-export function startEnemyShooting() {
-    shoot = setInterval(()=>{
-        if (gameRunning) {
-            
-            enemyShoot(); 
-        }
-    },enemyBulletFrequency);    
-
-        
+// Modify startEnemyShooting to be called inside the game loop
+export function startEnemyShooting(time) {
+    if (gameRunning && !gamePaused && !gameOver && time - lastEnemyShotTime > enemyShotInterval) {
+        enemyShoot();
+        lastEnemyShotTime = time; // Update the last shot time
+    }
 }
-
 
 
 
@@ -160,7 +156,7 @@ function addNewEnemies() {
     console.log("khdama olla la ???");
     
     if (enemyBulletFrequency > 1000) enemyBulletFrequency -= 100;
-    enemyBulletSpeed += 0.2;
+    enemyBulletSpeed += 1;
     scoreMultiplier *= 2;
     
     createEnemies(32);
