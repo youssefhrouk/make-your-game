@@ -1,4 +1,4 @@
-import { createShip, moveShip, fireBullet, moveBullet, bulletExists, addLives,scoreDiv, addScore } from "./ship.js";
+import { createShip, moveShip, fireBullet, moveBullet, bulletExists, addLives,scoreDiv, addScore,addTime,initTimeAndScore } from "./ship.js";
 import { moveEnemies, createEnemies, windowFocused, startEnemyShooting } from "./enemy.js";
 
 export const gameDiv = document.querySelector(".game");
@@ -96,6 +96,7 @@ window.addEventListener("load", () => {
   createEnemies(32);
   addLives();
   startEnemyShooting();
+  
 
   const startGameBtn = document.getElementById("startGame");
 
@@ -182,12 +183,18 @@ console.log('wash had zmar khdam olla la????????????');
   // addScore();
   createShip();
   createEnemies(32);
+  initTimeAndScore();
   addLives();
+  addTime();
+
   lastShotTime = 0;
 }
 
+//setInterval is used to update the time every second
+setInterval(addTime, 1000)
 
-
+//initTimeAndScore is called on load and restart
+initTimeAndScore();
 
 
 startGame();

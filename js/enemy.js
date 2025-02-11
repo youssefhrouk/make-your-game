@@ -3,7 +3,7 @@ import { gameRunning } from "./index.js";
 import {isBulletHitPlayer,addScore} from "./ship.js"
 let enemyBulletFrequency = 3000;
 let enemyBulletSpeed = 2; 
-export let scoreMultiplier = 1;
+export let scoreMultiplier = 10000;
 
 const enemyDiv = document.querySelector(".enemies");
 
@@ -11,7 +11,7 @@ let enemyDirection = 1, enemyX =30 , enemyY = 50;
 export let windowFocused = true;
 export let bulletExists = false;
 let bulletCount = 0;
-
+let shoot; 
 
 window.addEventListener('focus', () => {
     windowFocused = true;
@@ -23,7 +23,7 @@ window.addEventListener('blur', () => {
 
 
 export function createEnemies(enemyCount) {
-
+clearInterval(shoot);
     const enemiesPerRow = 8; 
     const enemyWidth = 50; 
     const enemyHeight = 40; 
@@ -84,9 +84,11 @@ enemyFire.setAttribute('class', 'enemyFire');
 
 function createEnemyBullet(enemyFireX,enemyFireY){
     enemyFire.style.left = `${enemyFireX}px`;
-    enemyFire.style.top= `${enemyFireY}px`;
+    enemyFire.style.top= `${enemyFireY + enemyBulletSpeed}px`;
     document.body.appendChild(enemyFire);
+    console.log(enemyBulletSpeed);
     return enemyFire;
+    
 }
 
 function enemyShoot() {
@@ -124,12 +126,12 @@ function moveEnemyBullet(bullet) {
 
 
 export function startEnemyShooting() {
-    const shoot = setInterval(()=>{
+    shoot = setInterval(()=>{
         if (gameRunning) {
             
             enemyShoot(); 
         }
-    },1000);    
+    },enemyBulletFrequency);    
 
         
 }
@@ -158,7 +160,7 @@ function addNewEnemies() {
     console.log("khdama olla la ???");
     
     if (enemyBulletFrequency > 1000) enemyBulletFrequency -= 100;
-    enemyBulletSpeed += 0.1;
+    enemyBulletSpeed += 0.2;
     scoreMultiplier *= 2;
     
     createEnemies(32);

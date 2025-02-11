@@ -1,6 +1,6 @@
 import { boxBCR, gameDiv, gameOver, gamePaused, keys } from "./index.js";
 import { gameRunning, gameKeys,gameLost } from "./index.js";
-import { enemyDestroyed,scoreMultiplier } from "./enemy.js";
+import { enemyDestroyed,scoreMultiplier,windowFocused } from "./enemy.js";
 
 export const scoreDiv = document.querySelector(".score")
 
@@ -8,7 +8,7 @@ const ship = document.createElement("img");
 
 export let shipX, shipY;
 export let bulletExists = false;
-let bulletCount = 0,score = 0;
+let bulletCount = 0,score;
 let lives;
 
 
@@ -90,7 +90,6 @@ export function addLives() {
         divLive.style.width = '30px'
         divLive.setAttribute("id",`life-${i}`);
         left += 30
-        console.log(left)
         divLive.onload =() =>{
 
             liveSpan.appendChild(divLive);
@@ -128,3 +127,30 @@ export function addScore(id) {
       
     // }
   }
+
+  export function initTimeAndScore() {
+    bulletCount = 0;
+    score = 0;
+    scoreDiv.innerHTML = `Score:${score}`;
+    sec = 0;
+    min = 0;
+    timeDiv.innerHTML = `Time:${min.toString().padStart(2,"0")}:${sec.toString().padStart(2,"0")}`
+}
+
+
+  const timeDiv = document.querySelector(".time");
+  export let sec;
+  let min;
+  export function addTime(){
+
+    console.log("wesh khdama???????");
+    
+    if (gameRunning && !gamePaused && windowFocused) {
+        sec++;
+        if (sec % 60 === 0) {
+            sec = 0;
+            min++;
+        }
+        timeDiv.innerHTML = `Time:${min.toString().padStart(2,"0")}:${sec.toString().padStart(2,"0")}`;
+    }
+}
