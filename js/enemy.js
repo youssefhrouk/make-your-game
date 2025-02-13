@@ -123,11 +123,9 @@ function moveEnemyBullet(bullet) {
 
 
 let lastEnemyShotTime = 0;  // Track the last time an enemy shot
-const enemyShotInterval = enemyBulletFrequency; // Time between each enemy shot
 
-// Modify startEnemyShooting to be called inside the game loop
 export function startEnemyShooting(time) {
-    if (gameRunning && !gamePaused && !gameOver && time - lastEnemyShotTime > enemyShotInterval) {
+    if (gameRunning && !gamePaused && !gameOver && time - lastEnemyShotTime > enemyBulletFrequency) {
         enemyShoot();
         lastEnemyShotTime = time; // Update the last shot time
     }
