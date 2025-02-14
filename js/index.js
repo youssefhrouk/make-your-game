@@ -166,7 +166,6 @@ export function gameLost() {
 }
 
 function resetGame() {
-console.log('wash had zmar khdam olla la????????????');
 
   gameRunning = true;
   gameOver = false;
