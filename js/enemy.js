@@ -54,7 +54,7 @@ export function createEnemies(enemyCount) {
 }
 
 export function moveEnemies() {
-    if (gameRunning && windowFocused) {
+    if (gameRunning && !gamePaused && windowFocused) {
         if (enemyTouching()) {
             enemyDirection *= -1;
             enemyY += 40;
@@ -159,4 +159,8 @@ function addNewEnemies() {
     scoreMultiplier *= 2;
     
     createEnemies(32);
+}
+
+export function createMothership(){
+
 }

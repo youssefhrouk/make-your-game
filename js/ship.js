@@ -1,6 +1,6 @@
 import { boxBCR, gameDiv, gameOver, gamePaused, keys } from "./index.js";
 import { gameRunning, gameKeys,gameLost } from "./index.js";
-import { enemyDestroyed,scoreMultiplier,windowFocused } from "./enemy.js";
+import { enemyDestroyed,scoreMultiplier,windowFocused,createMothership } from "./enemy.js";
 
 export const scoreDiv = document.querySelector(".score")
 
@@ -17,7 +17,7 @@ export function createShip() {
     shipY = boxBCR.height - 75;
     ship.src = "../images/ship.png";
     ship.setAttribute("class", "ship");
-    ship.width = 60;
+    ship.width = 50;
     ship.style.transform = `translate(${shipX}px,${shipY}px)`;
     gameDiv.appendChild(ship);
 }
@@ -48,12 +48,14 @@ export function fireBullet() {
     gameDiv.appendChild(bullet);
     
     bulletCount++;
-    // if (bulletCount === 13) {
-    //     createMothership();
-    //     bulletCount = 0;
-    // }
+    if (bulletCount === 13) {
+        createMothership();
+        bulletCount = 0;
+    }
     moveBullet();
 }
+
+
 
 
 export function moveBullet() {
@@ -85,9 +87,7 @@ export function addLives() {
     for (let i = 0; i < lives; i++) {
         const divLive = document.createElement("img");
         divLive.src = "../images/life.png";
-        divLive.style.position = "absolute";
         divLive.style.transform = `translate(${left}px, 0)`
-        divLive.style.width = '30px'
         divLive.setAttribute("id",`life-${i}`);
         left += 30
         divLive.onload =() =>{

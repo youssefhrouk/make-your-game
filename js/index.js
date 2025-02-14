@@ -170,6 +170,7 @@ function resetGame() {
   gameRunning = true;
   gameOver = false;
   gamePaused = false;
+  
   // addScore();
   createShip();
   createEnemies(32);
