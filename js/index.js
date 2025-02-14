@@ -1,15 +1,15 @@
-import { createShip, moveShip, fireBullet, moveBullet, bulletExists, addLives,scoreDiv, addScore,addTime,initTimeAndScore } from "./ship.js";
-import { moveEnemies, createEnemies, windowFocused, startEnemyShooting } from "./enemy.js";
+import { createShip, moveShip, fireBullet, moveBullet, bulletExists, addLives,addTime,initTimeAndScore } from "./ship.js";
+import { moveEnemies, createEnemies, startEnemyShooting } from "./enemy.js";
 
 export const gameDiv = document.querySelector(".game");
-  export let boxBCR = document.querySelector(".box").getBoundingClientRect();
+export let boxBCR = document.querySelector(".box").getBoundingClientRect();
 const titleDiv = document.querySelector(".title");
 const gameOverScreen = document.getElementById("gameOverScreen");
 export let gameRunning = false;
 export let gameOver = false;
 export let gamePaused = false;
-const isSmallScreen = document.querySelector(".isSmallScreen")
 let gamePausedByChecker = false;
+const isSmallScreen = document.querySelector(".isSmallScreen")
 const tryAgainBtn = document.getElementById("tryAgain")
 const resumeBtn = document.getElementById("resume");
 const restartBtn = document.getElementById("restart");
@@ -26,14 +26,6 @@ window.addEventListener('resize', () => {
   boxBCR = document.querySelector(".box").getBoundingClientRect();
   checkScreen();
 });
-
-
-
-
-
-
-
-
 
 
 function checkScreen() {
@@ -71,10 +63,8 @@ resumeBtn.addEventListener("click", () => {
 restartBtn.addEventListener("click", () => {
   pauseScreen.close();
   gamePaused = false;
-
   resetGame();
   startGame();
-
   moveBullet();
 });
 
@@ -89,7 +79,7 @@ tryAgainBtn.addEventListener('click', () => {
 
 })
 
-let lastShotTime = 0; 
+let lastShotTime = 0;
 
 window.addEventListener("load", () => {
   createShip();
@@ -98,7 +88,7 @@ window.addEventListener("load", () => {
   startEnemyShooting();
   
 
-  const startGameBtn = document.getElementById("startGame");
+  const startGameBtn = document.querySelector(".start-game");
 
   setInterval(() => {
     startGameBtn.classList.toggle("hidden");
@@ -116,7 +106,7 @@ document.addEventListener("keydown", (e) => {
 
   if ((e.code === "Space" || e.key === " ") && !gameKeys["Space"]) {
     if (gameRunning && !gamePaused && !bulletExists) {
-      gameKeys["Space"] = true;
+      gameKeys["Space"] = true; 
       checkScreen();
     }
 
@@ -134,6 +124,7 @@ document.addEventListener("keydown", (e) => {
   }
   if (e.code === "Escape") {
     if (gameRunning && !gamePaused) {
+      
       pauseScreen.show();
       gamePaused = true;
     } else if (gamePaused) {
@@ -154,19 +145,17 @@ document.addEventListener("keyup", (e) => {
   
 });
 
-function startGame(time) {
-  time = Date.now();
+function startGame() {
 
   if (!gamePaused && !gameOver) {
     moveShip();
     moveEnemies();
-    if (gameKeys["Space"] && time - lastShotTime > 70) {
+    if (gameKeys["Space"] && !bulletExists) {
       fireBullet()
-      lastShotTime = time
     }
-    startEnemyShooting(time);
+    startEnemyShooting();
 
-    requestAnimationFrame(startGame);
+    requestAnimationFrame(startGame)
   }
 }
 

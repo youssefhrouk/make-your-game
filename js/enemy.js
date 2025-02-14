@@ -124,7 +124,8 @@ function moveEnemyBullet(bullet) {
 
 let lastEnemyShotTime = 0;  // Track the last time an enemy shot
 
-export function startEnemyShooting(time) {
+export function startEnemyShooting() {
+    let time = Date.now(); 
     if (gameRunning && !gamePaused && !gameOver && time - lastEnemyShotTime > enemyBulletFrequency) {
         enemyShoot();
         lastEnemyShotTime = time; // Update the last shot time

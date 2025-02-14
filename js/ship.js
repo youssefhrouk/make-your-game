@@ -46,7 +46,7 @@ export function fireBullet() {
 
     bullet.style.transform = `translate(${bulletX}px, ${bulletY}px)`
     gameDiv.appendChild(bullet);
-
+    
     bulletCount++;
     // if (bulletCount === 13) {
     //     createMothership();
