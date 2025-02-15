@@ -1,7 +1,7 @@
 import { boxBCR, gameLost ,gamePaused, gameOver} from "./index.js";
 import { gameRunning } from "./index.js";
 import {isBulletHitPlayer,addScore} from "./ship.js"
-let enemyBulletFrequency = 1000;
+let enemyBulletFrequency = 3000;
 let enemyBulletSpeed = 2; 
 export let scoreMultiplier = 1;
 
@@ -93,6 +93,7 @@ function enemyShoot() {
     if (!windowFocused || gamePaused || !gameRunning || gameOver) return;
 
     const enemies = document.querySelectorAll('.enemy');
+    if (enemies.length > 0) {
     const randomEnemy = enemies[Math.floor(Math.random() * enemies.length)];
     const enemyBCR = randomEnemy.getBoundingClientRect();
 
@@ -101,6 +102,7 @@ function enemyShoot() {
     
     // Move the bullet downward
     moveEnemyBullet(bullet);
+    }
 }
 
 function moveEnemyBullet(bullet) {
@@ -156,7 +158,7 @@ function addNewEnemies() {
     
     if (enemyBulletFrequency > 1000) enemyBulletFrequency -= 100;
     enemyBulletSpeed += 1;
-    scoreMultiplier *= 2;
+    scoreMultiplier *= 1;
     
     createEnemies(32);
 }

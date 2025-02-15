@@ -23,7 +23,7 @@ export function createShip() {
 }
 
 export function moveShip() {
-    if (gameRunning) {
+    if (gameRunning) { 
         if (keys[0]) {
             if (keys[0] == 'r' && shipX < boxBCR.width - 52) shipX += 5;
             else if (shipX >= 2) shipX -= 5;

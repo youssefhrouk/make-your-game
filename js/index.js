@@ -27,6 +27,7 @@ window.addEventListener('resize', () => {
   checkScreen();
 });
 
+console.log(boxBCR);
 
 function checkScreen() {
   if (tooSmallScreen() && gameRunning && !gamePaused && !gameOver) {
@@ -79,8 +80,6 @@ tryAgainBtn.addEventListener('click', () => {
 
 })
 
-let lastShotTime = 0;
-
 window.addEventListener("load", () => {
   createShip();
   createEnemies(32);
@@ -96,6 +95,7 @@ window.addEventListener("load", () => {
 });
 
 document.addEventListener("keydown", (e) => {
+  console.log(keys);
   if (e.code === "ArrowLeft") {
     if (!keys.includes('l')) keys.unshift("l")
   }
@@ -104,10 +104,10 @@ document.addEventListener("keydown", (e) => {
   }
 
 
-  if ((e.code === "Space" || e.key === " ") && !gameKeys["Space"]) {
-    if (gameRunning && !gamePaused && !bulletExists) {
-      gameKeys["Space"] = true; 
+  if ((e.code === "Space" || e.key === " ") && !gameKeys["Space"]){
+    if (gameRunning && !gamePaused && !bulletExists){
       checkScreen();
+      gameKeys["Space"] = true; 
     }
 
     if (!gameRunning && !gamePaused && !gameOver) {
@@ -124,7 +124,6 @@ document.addEventListener("keydown", (e) => {
   }
   if (e.code === "Escape") {
     if (gameRunning && !gamePaused) {
-      
       pauseScreen.show();
       gamePaused = true;
     } else if (gamePaused) {
@@ -145,12 +144,13 @@ document.addEventListener("keyup", (e) => {
   
 });
 
+let lastShotTime = 0;
 function startGame() {
 
   if (!gamePaused && !gameOver) {
     moveShip();
     moveEnemies();
-    if (gameKeys["Space"] && !bulletExists) {
+    if (gameKeys["Space"] && !bulletExists /*&& time -lastShotTime > 3000*/) {
       fireBullet()
     }
     startEnemyShooting();
@@ -188,4 +188,4 @@ setInterval(addTime, 1000)
 initTimeAndScore();
 
 
-startGame();
+requestAnimationFrame(startGame());
