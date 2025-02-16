@@ -1,74 +1,156 @@
-import { boxBCR, gameDiv, gameOver,gamePaused } from "./index.js";
-import { gameRunning,gameKeys } from "./index.js";
+import { boxBCR, gameDiv, gameOver, gamePaused, keys } from "./index.js";
+import { gameRunning, gameKeys,gameLost } from "./index.js";
+import { enemyDestroyed,scoreMultiplier,windowFocused,createMothership } from "./enemy.js";
+
+export const scoreDiv = document.querySelector(".score")
 
 const ship = document.createElement("img");
 
 export let shipX, shipY;
 export let bulletExists = false;
+let bulletCount = 0,score;
+let lives;
+
 
 export function createShip() {
     shipX = boxBCR.width / 2 - 25;
     shipY = boxBCR.height - 75;
     ship.src = "../images/ship.png";
     ship.setAttribute("class", "ship");
-    ship.width = 40;
+    ship.width = 50;
     ship.style.transform = `translate(${shipX}px,${shipY}px)`;
     gameDiv.appendChild(ship);
 }
 
 export function moveShip() {
-    if (gameRunning) {
-        if (gameKeys.ArrowLeft && shipX >= 2) shipX -= 5;
-        if (gameKeys.ArrowRight && shipX < boxBCR.width - 52) shipX += 5;
-    } 
+    if (gameRunning) { 
+        if (keys[0]) {
+            if (keys[0] == 'r' && shipX < boxBCR.width - 52) shipX += 5;
+            else if (shipX >= 2) shipX -= 5;
+        }
+    }
 
     ship.style.transform = `translate(${shipX}px,${shipY}px)`;
 }
-const fire = document.createElement('div');
-fire.setAttribute('class', 'fire');
-export function createFire() {
+
+const bullet = document.createElement('div');
+
+bullet.setAttribute('class', 'bullet');
+
+let bulletX, bulletY;
+
+export function fireBullet() {
     bulletExists = true;
-    fire.style.left = `${shipX + 20}px`;
-    fire.style.top = `${shipY}px`;
-    gameDiv.appendChild(fire);
-    animateFire(fire);
+    bulletX = shipX + 24;
+    bulletY = shipY;
+
+    bullet.style.transform = `translate(${bulletX}px, ${bulletY}px)`
+    gameDiv.appendChild(bullet);
+    
+    bulletCount++;
+    if (bulletCount === 13) {
+        createMothership();
+        bulletCount = 0;
+    }
+    moveBullet();
 }
 
-function animateFire(fire) {
-    if (gameOver){
-        fire.remove();
+
+
+
+export function moveBullet() {
+    if (gameOver) {
+        bullet.remove();
         bulletExists = false;
-        return
-    } 
+        return;
+    }
     if (gameRunning && !gamePaused) {
+        const bulletBCR = bullet.getBoundingClientRect();
+        if (bulletBCR.top < boxBCR.top || enemyDestroyed(bulletBCR) /*|| mothershipDestroyed(bulletBCR)*/) {
+            bullet.remove();
 
-    const fireInterval = setInterval(() => {
-        const currentTop = parseInt(fire.style.top, 10);
-        fire.style.top = `${currentTop - 5}px`;
-
-        // Check for collisions with enemies
-        const enemies = document.querySelectorAll('.enemy');
-        enemies.forEach((enemy) => {
-            const enemyBCR = enemy.getBoundingClientRect();
-            const fireBCR = fire.getBoundingClientRect();
-            if (
-                fireBCR.left < enemyBCR.right &&
-                fireBCR.right > enemyBCR.left &&
-                fireBCR.top < enemyBCR.bottom &&
-                fireBCR.bottom > enemyBCR.top
-            ) {
-                // Collision detected
-                enemy.remove();
-                fire.remove();
-                clearInterval(fireInterval);
-            }
-        });
-
-        // Remove fire when it goes off-screen
-        if (currentTop < 0) {
-            clearInterval(fireInterval);
-            fire.remove();
+            bulletExists = false;
+            return;
         }
-    }, 20);
+        bulletY -= 10;
+        bullet.style.transform = `translate(${bulletX}px, ${bulletY}px)`
+        requestAnimationFrame(moveBullet)
+    }
+
 }
+
+export function addLives() {
+    const liveSpan = document.querySelector(".lives");
+    liveSpan.innerHTML = "";
+    let left = 0;
+    lives = 3
+    for (let i = 0; i < lives; i++) {
+        const divLive = document.createElement("img");
+        divLive.src = "../images/life.png";
+        divLive.style.transform = `translate(${left}px, 0)`
+        divLive.setAttribute("id",`life-${i}`);
+        left += 30
+        divLive.onload =() =>{
+
+            liveSpan.appendChild(divLive);
+        }
+    }
+
+}
+export function isBulletHitPlayer(bulletBCR) {
+    const playerBCR = document.querySelector(".ship").getBoundingClientRect();
+    if (bulletBCR.right > playerBCR.left && bulletBCR.left < playerBCR.right &&
+        bulletBCR.bottom > playerBCR.top && bulletBCR.top < playerBCR.bottom) {
+            console.log("fffffffff",lives);
+            
+            
+            lives--;
+            lives > 0 ? document.getElementById(`life-${lives}`).remove() : gameLost();
+            return true;
+        }
+    return false;
+}
+
+export function addScore(id) {
+    // if (isMothership === true) {
+    //   score += 300;
+    //   scoreDiv.innerHTML = `Score: ${score}`;
+    // } else if (isMothership === false) {
+      if (id < 8) {
+        score += 30 * scoreMultiplier;
+      } else if (id < 16 && id >= 8) {
+        score += 20 * scoreMultiplier;
+      } else {
+        score += 10 * scoreMultiplier;
+      }
+      scoreDiv.textContent = `Score: ${score}`;
+      
+    // }
+  }
+
+  export function initTimeAndScore() {
+    bulletCount = 0;
+    score = 0;
+    scoreDiv.innerHTML = `Score:${score}`;
+    sec = 0;
+    min = 0;
+    timeDiv.innerHTML = `Time:${min.toString().padStart(2,"0")}:${sec.toString().padStart(2,"0")}`
+}
+
+
+  const timeDiv = document.querySelector(".time");
+  export let sec;
+  let min;
+  export function addTime(){
+
+    console.log("wesh khdama???????");
+    
+    if (gameRunning && !gamePaused && windowFocused) {
+        sec++;
+        if (sec % 60 === 0) {
+            sec = 0;
+            min++;
+        }
+        timeDiv.innerHTML = `Time:${min.toString().padStart(2,"0")}:${sec.toString().padStart(2,"0")}`;
+    }
 }

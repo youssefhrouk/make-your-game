@@ -1,5 +1,5 @@
-import { createShip, moveShip, createFire } from "./ship.js";
-import {  moveEnemies,createEnemies } from "./enemy.js";
+import { createShip, moveShip, fireBullet, moveBullet, bulletExists, addLives,addTime,initTimeAndScore } from "./ship.js";
+import { moveEnemies, createEnemies, startEnemyShooting } from "./enemy.js";
 
 export const gameDiv = document.querySelector(".game");
 export let boxBCR = document.querySelector(".box").getBoundingClientRect();
@@ -8,62 +8,120 @@ const gameOverScreen = document.getElementById("gameOverScreen");
 export let gameRunning = false;
 export let gameOver = false;
 export let gamePaused = false;
+let gamePausedByChecker = false;
+const isSmallScreen = document.querySelector(".isSmallScreen")
+const tryAgainBtn = document.getElementById("tryAgain")
+const resumeBtn = document.getElementById("resume");
+const restartBtn = document.getElementById("restart");
+const pauseScreen = document.getElementById("pauseScreen");
 export const gameKeys = {
   ArrowLeft: false,
   ArrowRight: false,
   Space: false,
 };
-const resumeBtn = document.getElementById("resume");
-const restartBtn = document.getElementById("restart");
-const pauseScreen = document.getElementById("pauseScreen");
+
+export const keys = []
+
+window.addEventListener('resize', () => {
+  boxBCR = document.querySelector(".box").getBoundingClientRect();
+  checkScreen();
+});
+
+console.log(boxBCR);
+
+function checkScreen() {
+  if (tooSmallScreen() && gameRunning && !gamePaused && !gameOver) {
+    gamePausedByChecker = true;
+    gamePaused = true;
+    isSmallScreen.show();
+  } else if (!tooSmallScreen() && gameRunning && gamePaused && gamePausedByChecker) {
+    gamePaused = false;
+    isSmallScreen.close();
+    startGame();
+    moveBullet();
+    gamePausedByChecker = false;
+  }
+  return;
+}
+
+function tooSmallScreen() {
+  return window.innerWidth <= boxBCR.width || window.innerHeight <= boxBCR.height;
+}
+
+
+
 
 resumeBtn.addEventListener("click", () => {
   pauseScreen.close();
   gamePaused = false;
   startGame();
+  moveBullet();
 });
+
+
+
 
 restartBtn.addEventListener("click", () => {
   pauseScreen.close();
   gamePaused = false;
+  resetGame();
   startGame();
+  moveBullet();
 });
 
-let lastShotTime = 0; // Track last shot time
-const shotCooldown = 1000; // 1 second (1000 milliseconds)
+tryAgainBtn.addEventListener('click', () => {
+  gameOverScreen.close();
+  gameRunning = true;
+  gameOver = false;
+
+  resetGame();
+  startGame();
+  moveBullet();
+
+})
 
 window.addEventListener("load", () => {
   createShip();
   createEnemies(32);
-  const startGameBtn = document.getElementById("startGame");
+  addLives();
+  startEnemyShooting();
+  
+
+  const startGameBtn = document.querySelector(".start-game");
 
   setInterval(() => {
     startGameBtn.classList.toggle("hidden");
   }, 700);
 });
 
-// Event listener for keydown actions
 document.addEventListener("keydown", (e) => {
-  if (e.code === "ArrowLeft") gameKeys["ArrowLeft"] = true;
-  if (e.code === "ArrowRight") gameKeys["ArrowRight"] = true;
+  console.log(keys);
+  if (e.code === "ArrowLeft") {
+    if (!keys.includes('l')) keys.unshift("l")
+  }
+  if (e.code === "ArrowRight") {
+    if (!keys.includes('r')) keys.unshift("r")
+  }
 
-  const currentTime = Date.now();
 
-  if ((e.code === "Space" || e.key === " ") && !gameKeys["Space"]) {
-    if (gameRunning && currentTime - lastShotTime >= shotCooldown) {
-      gameKeys["Space"] = true;
-      lastShotTime = currentTime; 
-      createFire();
+  if ((e.code === "Space" || e.key === " ") && !gameKeys["Space"]){
+    if (gameRunning && !gamePaused && !bulletExists){
+      checkScreen();
+      gameKeys["Space"] = true; 
     }
 
-    if (!gameRunning) {
+    if (!gameRunning && !gamePaused && !gameOver) {
       titleDiv.remove();
       gameDiv.removeAttribute("hidden");
       gameRunning = true;
     }
   }
-
-  // Pause and unpause game on Escape key
+  if (e.code === 'Enter') {
+    if (gameOver) {
+      gameRunning = true;
+      gameOver = false;
+    }
+  }
   if (e.code === "Escape") {
     if (gameRunning && !gamePaused) {
       pauseScreen.show();
@@ -72,32 +130,62 @@ document.addEventListener("keydown", (e) => {
       pauseScreen.close();
       gamePaused = false;
       startGame();
+      moveBullet();
     }
   }
 });
 
-// Event listener for keyup actions
 document.addEventListener("keyup", (e) => {
-  if (e.code === "ArrowLeft") gameKeys["ArrowLeft"] = false;
-  if (e.code === "ArrowRight") gameKeys["ArrowRight"] = false;
+  if (e.code === "ArrowLeft") keys.splice(keys.indexOf("l"), 1)
+  if (e.code === "ArrowRight") keys.splice(keys.indexOf("r"), 1)
   if (e.code === "Space" || e.key === " ") {
-    gameKeys["Space"] = false; // Reset space key on release
+    gameKeys["Space"] = false;
   }
+  
 });
 
-// Main game loop
+let lastShotTime = 0;
 function startGame() {
+
   if (!gamePaused && !gameOver) {
     moveShip();
     moveEnemies();
-    requestAnimationFrame(startGame); // Loop the game
+    if (gameKeys["Space"] && !bulletExists /*&& time -lastShotTime > 3000*/) {
+      fireBullet()
+    }
+    startEnemyShooting();
+
+    requestAnimationFrame(startGame)
   }
 }
 
 export function gameLost() {
   gameRunning = false;
   gameOver = true;
-  gameOverScreen.show(); // Show game over screen
+  gameOverScreen.show();
 }
 
-startGame();
+function resetGame() {
+
+  gameRunning = true;
+  gameOver = false;
+  gamePaused = false;
+  
+  // addScore();
+  createShip();
+  createEnemies(32);
+  initTimeAndScore();
+  addLives();
+  addTime();
+
+  lastShotTime = 0;
+}
+
+//setInterval is used to update the time every second
+setInterval(addTime, 1000)
+
+//initTimeAndScore is called on load and restart
+initTimeAndScore();
+
+
+requestAnimationFrame(startGame());
