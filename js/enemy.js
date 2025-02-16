@@ -21,7 +21,11 @@ window.addEventListener('blur', () => {
 });
 
 
+
+
 export function createEnemies(enemyCount) {
+    
+
     const enemiesPerRow = 8; 
     const enemyWidth = 50; 
     const enemyHeight = 40; 
@@ -54,6 +58,7 @@ export function createEnemies(enemyCount) {
 }
 
 export function moveEnemies() {
+     
     if (gameRunning && !gamePaused && windowFocused) {
         if (enemyTouching()) {
             enemyDirection *= -1;
@@ -105,12 +110,16 @@ function enemyShoot() {
     }
 }
 
+let makeEnemiesShootFaster = 5;
 function moveEnemyBullet(bullet) {
-
     function move() {
+        if (gamePaused) {
+            bullet.remove();
+            return;
+        }
         const bulletBCR = bullet.getBoundingClientRect();
         
-        bullet.style.top = `${bulletBCR.top + 5}px`;
+        bullet.style.top = `${bulletBCR.top + makeEnemiesShootFaster}px`;
 
         if (bulletBCR.bottom < boxBCR.bottom && !isBulletHitPlayer(bulletBCR)) {
             requestAnimationFrame(move);
@@ -120,6 +129,7 @@ function moveEnemyBullet(bullet) {
     }
 
     requestAnimationFrame(move);
+    
 }
 
 
@@ -128,25 +138,87 @@ let lastEnemyShotTime = 0;  // Track the last time an enemy shot
 
 export function startEnemyShooting() {
     let time = Date.now(); 
+
+    // Stop shooting when the game is won
+    if (winTheGame >= 4) {
+        return; // Exit the function, stopping enemy shooting
+    }
     if (gameRunning && !gamePaused && !gameOver && time - lastEnemyShotTime > enemyBulletFrequency) {
         enemyShoot();
         lastEnemyShotTime = time; // Update the last shot time
-    }
+    } 
 }
 
 
 
+let winTheGame = 1;
+let levelsWinMessageTime = 500;
 export function enemyDestroyed(bBCR) {
     const enemies = document.querySelectorAll('.enemy');
     let hit = false;
+    console.log("levels: ", winTheGame);
+    
     enemies.forEach((enemy) => {
         const eBCR = enemy.getBoundingClientRect();
         if (eBCR.top <= bBCR.top && eBCR.bottom >= bBCR.top && eBCR.left <= bBCR.left && eBCR.right >= bBCR.right) {
                 enemy.remove();
                 hit = true;
                 addScore(enemy.id);
+                console.log("enemies length in destroyed func: ", enemies.length);
                 if (enemies.length <= 1) {
+                    winTheGame++;
+                    // Create the main box div
+    const box = document.createElement("div");
+    box.classList.add("box");
+
+    // Apply styles
+    box.style.zIndex = "0";
+    box.style.backgroundColor = "black";
+    box.style.width = "900px";
+    box.style.height = "600px";
+    box.style.border = "1px solid white";
+    box.style.position = "absolute";
+    box.style.left = "50%";
+    box.style.top = "50%";
+    box.style.transform = "translate(-50%, -50%)";
+    box.style.display = "flex";
+    box.style.justifyContent = "center";
+    box.style.alignItems = "center";
+
+    // Create the text element
+    const levelText = document.createElement("div");
+    if (winTheGame == 4){
+       levelText.textContent = "🎖️ You did it! A legendary win!";
+        // Reload the page after 5 seconds
+       levelsWinMessageTime = 5000;
+   } else {
+       levelText.textContent = "LEVEL "+winTheGame;
+   }
+
+    // Style the text
+    levelText.style.color = "white";
+    levelText.style.fontSize = "100px"; 
+    levelText.style.fontWeight = "bold";
+    levelText.style.fontFamily = "Arial, sans-serif";
+    levelText.style.textTransform = "uppercase";
+
+    // Append the text to the box
+    box.appendChild(levelText);
+
+    // Append the box to the document body
+    document.body.appendChild(box);
+
+    // Remove the div after 1 second
+    setTimeout(() => {
+       if (levelsWinMessageTime == 5000) {
+           location.reload();
+       } else {
+           box.remove(); // This removes the div from the DOM
+       }
+    }, levelsWinMessageTime);
+                    makeEnemiesShootFaster+=5
                     addNewEnemies();
+                    
                 }
         }
     })
@@ -154,8 +226,7 @@ export function enemyDestroyed(bBCR) {
 }
 
 function addNewEnemies() {
-    console.log("khdama olla la ???");
-    
+
     if (enemyBulletFrequency > 1000) enemyBulletFrequency -= 100;
     enemyBulletSpeed += 1;
     scoreMultiplier *= 1;

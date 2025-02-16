@@ -142,8 +142,6 @@ export function addScore(id) {
   export let sec;
   let min;
   export function addTime(){
-
-    console.log("wesh khdama???????");
     
     if (gameRunning && !gamePaused && windowFocused) {
         sec++;

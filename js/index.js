@@ -27,7 +27,6 @@ window.addEventListener('resize', () => {
   checkScreen();
 });
 
-console.log(boxBCR);
 
 function checkScreen() {
   if (tooSmallScreen() && gameRunning && !gamePaused && !gameOver) {
