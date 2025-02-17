@@ -87,11 +87,13 @@ img {
 }
 
 .ship {
+    will-change: transform;
     position: absolute;
     transition: transform 0.05s;
 }
 
 .bullet {
+    will-change: transform;
     position: absolute;
     width: 3px;
     height: 15px;
@@ -100,6 +102,7 @@ img {
 }
 
 .enemyFire {
+    will-change: transform;
     position: absolute;
     z-index: 5;
     width: 5px;
