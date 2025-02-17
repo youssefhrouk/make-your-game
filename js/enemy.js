@@ -10,7 +10,6 @@ const enemyDiv = document.querySelector(".enemies");
 let enemyDirection = 1, enemyX =30 , enemyY = 50;
 export let windowFocused = true;
 export let bulletExists = false;
-let bulletCount = 0;
 
 window.addEventListener('focus', () => {
     windowFocused = true;
@@ -22,10 +21,12 @@ window.addEventListener('blur', () => {
 
 
 
+export function clearEnemies() {
+    const enemies = document.querySelectorAll('.enemy'); // Select all enemies
+    enemies.forEach(enemy => enemy.remove()); // Remove each enemy
+}
 
 export function createEnemies(enemyCount) {
-    
-
     const enemiesPerRow = 8; 
     const enemyWidth = 50; 
     const enemyHeight = 40; 
@@ -33,15 +34,13 @@ export function createEnemies(enemyCount) {
     const gapY = 10; 
     enemyX = boxBCR.width / 2 - 200;
     enemyY = 100;
-
+    
     enemyDiv.style.transform = `translate(${enemyX}px, ${enemyY}px)`;
     for (let i = 0; i < enemyCount; i++) {
         const row = Math.floor(i / enemiesPerRow);
         const col = i % enemiesPerRow;
-
         const x = col * (enemyWidth + gapX);
         const y = row * (enemyHeight + gapY);
-        
         const enemy = document.createElement('img');
         enemy.setAttribute("id", i);
         enemy.setAttribute('class', 'enemy');
@@ -89,7 +88,6 @@ function createEnemyBullet(enemyFireX,enemyFireY){
     enemyFire.style.left = `${enemyFireX}px`;
     enemyFire.style.top= `${enemyFireY + enemyBulletSpeed}px`;
     document.body.appendChild(enemyFire);
-    console.log(enemyBulletSpeed);
     return enemyFire;
     
 }
@@ -101,16 +99,17 @@ function enemyShoot() {
     if (enemies.length > 0) {
     const randomEnemy = enemies[Math.floor(Math.random() * enemies.length)];
     const enemyBCR = randomEnemy.getBoundingClientRect();
-
     // Create a bullet from the enemy's position
     const bullet = createEnemyBullet(enemyBCR.left + enemyBCR.width / 2, enemyBCR.top + enemyBCR.height);
-    
     // Move the bullet downward
     moveEnemyBullet(bullet);
     }
 }
 
-let makeEnemiesShootFaster = 5;
+export const gameSettings = {
+    makeEnemiesShootFaster: 5
+};
+
 function moveEnemyBullet(bullet) {
     function move() {
         if (gamePaused) {
@@ -119,7 +118,7 @@ function moveEnemyBullet(bullet) {
         }
         const bulletBCR = bullet.getBoundingClientRect();
         
-        bullet.style.top = `${bulletBCR.top + makeEnemiesShootFaster}px`;
+        bullet.style.top = `${bulletBCR.top + gameSettings.makeEnemiesShootFaster}px`;
 
         if (bulletBCR.bottom < boxBCR.bottom && !isBulletHitPlayer(bulletBCR)) {
             requestAnimationFrame(move);
@@ -132,15 +131,12 @@ function moveEnemyBullet(bullet) {
     
 }
 
-
-
-let lastEnemyShotTime = 0;  // Track the last time an enemy shot
-
+let lastEnemyShotTime = 0;
 export function startEnemyShooting() {
     let time = Date.now(); 
 
     // Stop shooting when the game is won
-    if (winTheGame >= 4) {
+    if (levelSettings.winTheGame >= 4) {
         return; // Exit the function, stopping enemy shooting
     }
     if (gameRunning && !gamePaused && !gameOver && time - lastEnemyShotTime > enemyBulletFrequency) {
@@ -149,77 +145,75 @@ export function startEnemyShooting() {
     } 
 }
 
-
-
-let winTheGame = 1;
+export const levelSettings = {
+    winTheGame : 1
+}
 let levelsWinMessageTime = 500;
 export function enemyDestroyed(bBCR) {
     const enemies = document.querySelectorAll('.enemy');
     let hit = false;
-    console.log("levels: ", winTheGame);
-    
     enemies.forEach((enemy) => {
         const eBCR = enemy.getBoundingClientRect();
         if (eBCR.top <= bBCR.top && eBCR.bottom >= bBCR.top && eBCR.left <= bBCR.left && eBCR.right >= bBCR.right) {
                 enemy.remove();
                 hit = true;
                 addScore(enemy.id);
-                console.log("enemies length in destroyed func: ", enemies.length);
                 if (enemies.length <= 1) {
-                    winTheGame++;
+                    levelSettings.winTheGame++;
                     // Create the main box div
-    const box = document.createElement("div");
-    box.classList.add("box");
+                    const box = document.createElement("div");
+                    box.classList.add("box");
 
-    // Apply styles
-    box.style.zIndex = "0";
-    box.style.backgroundColor = "black";
-    box.style.width = "900px";
-    box.style.height = "600px";
-    box.style.border = "1px solid white";
-    box.style.position = "absolute";
-    box.style.left = "50%";
-    box.style.top = "50%";
-    box.style.transform = "translate(-50%, -50%)";
-    box.style.display = "flex";
-    box.style.justifyContent = "center";
-    box.style.alignItems = "center";
+                    // Apply styles
+                    box.style.zIndex = "0";
+                    box.style.backgroundColor = "black";
+                    box.style.width = "900px";
+                    box.style.height = "600px";
+                    box.style.border = "1px solid white";
+                    box.style.position = "absolute";
+                    box.style.left = "50%";
+                    box.style.top = "50%";
+                    box.style.transform = "translate(-50%, -50%)";
+                    box.style.display = "flex";
+                    box.style.justifyContent = "center";
+                    box.style.alignItems = "center";
 
-    // Create the text element
-    const levelText = document.createElement("div");
-    if (winTheGame == 4){
-       levelText.textContent = "🎖️ You did it! A legendary win!";
-        // Reload the page after 5 seconds
-       levelsWinMessageTime = 5000;
-   } else {
-       levelText.textContent = "LEVEL "+winTheGame;
-   }
+                    // Create the text element
+                    const levelText = document.createElement("div");
+                    if (levelSettings.winTheGame == 4){
+                       levelText.textContent = "🎖️ You did it! A legendary win!";
+                        // Reload the page after 5 seconds
+                       levelsWinMessageTime = 5000;
+                    } else {
+                        levelText.textContent = "LEVEL "+levelSettings.winTheGame;
+                    }
 
-    // Style the text
-    levelText.style.color = "white";
-    levelText.style.fontSize = "100px"; 
-    levelText.style.fontWeight = "bold";
-    levelText.style.fontFamily = "Arial, sans-serif";
-    levelText.style.textTransform = "uppercase";
+                    // Style the text
+                    levelText.style.color = "white";
+                    levelText.style.fontSize = "100px"; 
+                    levelText.style.fontWeight = "bold";
+                    levelText.style.fontFamily = "Arial, sans-serif";
+                    levelText.style.textTransform = "uppercase";
+                                
+                    // Append the text to the box
+                    box.appendChild(levelText);
+                                
+                    // Append the box to the document body
+                    document.body.appendChild(box);
+                                
+                    // Remove the div after 1 second
+                    setTimeout(() => {
+                       if (levelsWinMessageTime == 5000) {
+                           location.reload();
+                       } else {
+                           box.remove(); // This removes the div from the DOM
+                       }
+                    }, levelsWinMessageTime);
 
-    // Append the text to the box
-    box.appendChild(levelText);
-
-    // Append the box to the document body
-    document.body.appendChild(box);
-
-    // Remove the div after 1 second
-    setTimeout(() => {
-       if (levelsWinMessageTime == 5000) {
-           location.reload();
-       } else {
-           box.remove(); // This removes the div from the DOM
-       }
-    }, levelsWinMessageTime);
-                    makeEnemiesShootFaster+=5
-                    addNewEnemies();
+                gameSettings.makeEnemiesShootFaster+=5;
+                addNewEnemies();
                     
-                }
+            }
         }
     })
     return hit;
@@ -232,8 +226,4 @@ function addNewEnemies() {
     scoreMultiplier *= 1;
     
     createEnemies(32);
-}
-
-export function createMothership(){
-
 }

@@ -1,6 +1,6 @@
 import { boxBCR, gameDiv, gameOver, gamePaused, keys } from "./index.js";
 import { gameRunning, gameKeys,gameLost } from "./index.js";
-import { enemyDestroyed,scoreMultiplier,windowFocused,createMothership } from "./enemy.js";
+import { enemyDestroyed,scoreMultiplier,windowFocused } from "./enemy.js";
 
 export const scoreDiv = document.querySelector(".score")
 
@@ -8,7 +8,7 @@ const ship = document.createElement("img");
 
 export let shipX, shipY;
 export let bulletExists = false;
-let bulletCount = 0,score;
+let score;
 let lives;
 
 
@@ -47,11 +47,7 @@ export function fireBullet() {
     bullet.style.transform = `translate(${bulletX}px, ${bulletY}px)`
     gameDiv.appendChild(bullet);
     
-    bulletCount++;
-    if (bulletCount === 13) {
-        createMothership();
-        bulletCount = 0;
-    }
+    
     moveBullet();
 }
 
@@ -127,7 +123,6 @@ export function addScore(id) {
   }
 
   export function initTimeAndScore() {
-    bulletCount = 0;
     score = 0;
     scoreDiv.innerHTML = `Score:${score}`;
     sec = 0;

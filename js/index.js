@@ -1,5 +1,5 @@
 import { createShip, moveShip, fireBullet, moveBullet, bulletExists, addLives,addTime,initTimeAndScore } from "./ship.js";
-import { moveEnemies, createEnemies, startEnemyShooting } from "./enemy.js";
+import { moveEnemies, createEnemies, startEnemyShooting, clearEnemies, gameSettings, levelSettings } from "./enemy.js";
 
 export const gameDiv = document.querySelector(".game");
 export let boxBCR = document.querySelector(".box").getBoundingClientRect();
@@ -94,7 +94,6 @@ window.addEventListener("load", () => {
 });
 
 document.addEventListener("keydown", (e) => {
-  console.log(keys);
   if (e.code === "ArrowLeft") {
     if (!keys.includes('l')) keys.unshift("l")
   }
@@ -170,8 +169,11 @@ function resetGame() {
   gameOver = false;
   gamePaused = false;
   
+  gameSettings.makeEnemiesShootFaster = 5;
+  levelSettings.winTheGame = 1;
   // addScore();
   createShip();
+  clearEnemies();
   createEnemies(32);
   initTimeAndScore();
   addLives();
