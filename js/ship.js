@@ -101,11 +101,9 @@ export function isBulletHitPlayer(bulletBCR) {
     const playerBCR = document.querySelector(".ship").getBoundingClientRect();
     if (bulletBCR.right > playerBCR.left && bulletBCR.left < playerBCR.right &&
         bulletBCR.bottom > playerBCR.top && bulletBCR.top < playerBCR.bottom) {
-            console.log("fffffffff",lives);
-            
             
             lives--;
-            lives > 0 ? document.getElementById(`life-${lives}`).remove() : gameLost();
+            lives > 0 ? document.getElementById(`life-${lives}`).remove() : (document.getElementById(`life-${lives}`).remove(), gameLost());
             return true;
         }
     return false;
