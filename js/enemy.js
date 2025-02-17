@@ -208,13 +208,9 @@ export function enemyDestroyed(bBCR) {
                        } else {
                            box.remove(); // This removes the div from the DOM
                            gameSettings.makeEnemiesShootFaster+=5;
-                            createEnemies(32);
+                           createEnemies(32);
                        }
-                    }, levelsWinMessageTime);
-
-                // gameSettings.makeEnemiesShootFaster+=5;
-                // createEnemies(32);
-                    
+                    }, levelsWinMessageTime);       
             }
         }
     })

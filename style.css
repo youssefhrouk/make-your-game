@@ -10,6 +10,7 @@ body {
 }
 
 .box {
+    overflow: hidden;  /* Fix a crash game: This prevents enemies from being drawn outside the game box */
     z-index: 0;
     background-color: black;
     width: 900px;

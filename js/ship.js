@@ -1,5 +1,5 @@
 import { boxBCR, gameDiv, gameOver, gamePaused, keys } from "./index.js";
-import { gameRunning, gameKeys,gameLost } from "./index.js";
+import { gameRunning,gameLost } from "./index.js";
 import { enemyDestroyed,scoreMultiplier,windowFocused } from "./enemy.js";
 
 export const scoreDiv = document.querySelector(".score")
@@ -50,9 +50,6 @@ export function fireBullet() {
     
     moveBullet();
 }
-
-
-
 
 export function moveBullet() {
     if (gameOver) {
@@ -106,10 +103,6 @@ export function isBulletHitPlayer(bulletBCR) {
 }
 
 export function addScore(id) {
-    // if (isMothership === true) {
-    //   score += 300;
-    //   scoreDiv.innerHTML = `Score: ${score}`;
-    // } else if (isMothership === false) {
       if (id < 8) {
         score += 30 * scoreMultiplier;
       } else if (id < 16 && id >= 8) {
@@ -118,8 +111,7 @@ export function addScore(id) {
         score += 10 * scoreMultiplier;
       }
       scoreDiv.textContent = `Score: ${score}`;
-      
-    // }
+  
   }
 
   export function initTimeAndScore() {
