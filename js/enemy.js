@@ -207,11 +207,13 @@ export function enemyDestroyed(bBCR) {
                            location.reload();
                        } else {
                            box.remove(); // This removes the div from the DOM
+                           gameSettings.makeEnemiesShootFaster+=5;
+                            createEnemies(32);
                        }
                     }, levelsWinMessageTime);
 
-                gameSettings.makeEnemiesShootFaster+=5;
-                addNewEnemies();
+                // gameSettings.makeEnemiesShootFaster+=5;
+                // createEnemies(32);
                     
             }
         }
@@ -219,11 +221,3 @@ export function enemyDestroyed(bBCR) {
     return hit;
 }
 
-function addNewEnemies() {
-
-    if (enemyBulletFrequency > 1000) enemyBulletFrequency -= 100;
-    enemyBulletSpeed += 1;
-    scoreMultiplier *= 1;
-    
-    createEnemies(32);
-}

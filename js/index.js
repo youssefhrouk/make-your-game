@@ -188,5 +188,5 @@ setInterval(addTime, 1000)
 //initTimeAndScore is called on load and restart
 initTimeAndScore();
 
-
+// startGame();
 requestAnimationFrame(startGame());
