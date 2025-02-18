@@ -67,6 +67,9 @@ img {
     width: 30px;
 }
 
+.game {
+    will-change: transform;
+}
 
 .enemies {
     will-change: transform;
