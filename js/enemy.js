@@ -69,6 +69,7 @@ export function moveEnemies() {
 }
 
 function enemyTouching() {
+
     const enemies = document.querySelectorAll('.enemy');
     let touching = false;
     enemies.forEach((enemy) => {

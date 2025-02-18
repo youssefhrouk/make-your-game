@@ -142,7 +142,9 @@ document.addEventListener("keyup", (e) => {
   
 });
 
+console.log(boxBCR);
 function startGame() {
+
 
   if (!gamePaused && !gameOver) {
     moveShip();
@@ -177,8 +179,6 @@ function resetGame() {
   initTimeAndScore();
   addLives();
   addTime();
-
-  lastShotTime = 0;
 }
 
 //setInterval is used to update the time every second
@@ -187,5 +187,4 @@ setInterval(addTime, 1000)
 //initTimeAndScore is called on load and restart
 initTimeAndScore();
 
-// startGame();
-requestAnimationFrame(startGame());
+requestAnimationFrame(startGame);
