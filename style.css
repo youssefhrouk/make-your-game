@@ -10,8 +10,7 @@ body {
 }
 
 .box {
-    overflow: hidden;  /* Fix a crash game: This prevents enemies from being drawn outside the game box */
-    z-index: 0;
+    overflow: hidden; 
     background-color: black;
     width: 900px;
     height: 600px;
@@ -30,12 +29,10 @@ body {
     left: 30%;
     top: 10%;
     transform: translate(-20%);
-    white-space: nowrap;
 }
 
 .instructions {
     font: 17px f;
-
     position: absolute;
     top: 30%;
     left: 42%;
@@ -58,12 +55,6 @@ body {
     transition: opacity 0.5s ease;
 }
 
-@keyframes flash {
-    50% {
-        opacity: 0.3;
-    }
-}
-
 .hidden {
     opacity: 0.2;
 }
@@ -76,12 +67,8 @@ img {
     width: 30px;
 }
 
-.game {
-    will-change: transform;
-}
 
 .enemies {
-    /* position: relative;  */
     will-change: transform;
     width: 400px;
     height: auto;
@@ -116,7 +103,7 @@ dialog {
     z-index: 1;
     position: absolute;
     top: 50%;
-    left: 35%;
+    left: 25%;
     transform: translate(-50%, -50%);
     background-color: rgba(248, 119, 68, 0.8);
     color: white;
@@ -153,7 +140,7 @@ dialog button:hover {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font: 40px GameFont;
+    font: 40px f;
     z-index: 2;
     background-color: rgba(56, 55, 55, 1);
 }
