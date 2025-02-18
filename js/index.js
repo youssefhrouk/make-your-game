@@ -104,7 +104,6 @@ document.addEventListener("keydown", (e) => {
 
   if ((e.code === "Space" || e.key === " ") && !gameKeys["Space"]){
     if (gameRunning && !gamePaused && !bulletExists){
-      checkScreen();
       gameKeys["Space"] = true; 
     }
 
@@ -112,6 +111,7 @@ document.addEventListener("keydown", (e) => {
       titleDiv.remove();
       gameDiv.removeAttribute("hidden");
       gameRunning = true;
+      checkScreen();
     }
   }
   if (e.code === 'Enter') {
@@ -142,7 +142,6 @@ document.addEventListener("keyup", (e) => {
   
 });
 
-let lastShotTime = 0;
 function startGame() {
 
   if (!gamePaused && !gameOver) {
